@@ -18,12 +18,12 @@ export const loginUser = async (req, res) => {
     
     
     user.access=true;
-      res.status(200)
+      res
       .cookie("keyCookieJobsRoad", (user.token = access_token), {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
       })
-      .json({message:"Login Successfully",user:user});
+      .send({user:user,token:access_token});
       
       
   } catch (error) {
@@ -31,10 +31,10 @@ export const loginUser = async (req, res) => {
     const message = {
       message: "email o password no coinciden",
     };
-    const URI = {
-      URI: "/api/session/login",
-    };
-    res.status(500).json({ message, URI });
+    // const URI = {
+    //   URI: "/api/session/login",
+    // };
+    res.status(401).json({message});
   }
 };
 
@@ -205,4 +205,5 @@ export const getProfile = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   res.clearCookie("keyCookieJobsRoad").json({logout:true});
+  logInfo.info("User Disconect");
 };

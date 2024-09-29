@@ -11,14 +11,12 @@ import express from 'express';
 //import of passport
 import passport from 'passport';
 import cookieParser from "cookie-parser";
-//***import session from "express-session";
-import MongoStore from "connect-mongo";
 import sessionRouter from "./src/routes/SessionRouter.js";
-
+import cors from "cors";
 import initializatePassport from "./src/config/PassportConfig.js"
 
 
-const PORT = parseInt(process.argv[2]) || process.env.PORT || 8080
+const PORT = parseInt(process.argv[2]) || Envs.PORT || 8080
 const modoCluster = process.argv[3] == 'CLUSTER'
 
 const app = express();
@@ -50,6 +48,8 @@ if (modoCluster && cluster.isPrimary) {
     //middleware of json
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
+    //cors middleware
+    app.use(cors());
 
     //Mongo-conect configuration
     // app.use(

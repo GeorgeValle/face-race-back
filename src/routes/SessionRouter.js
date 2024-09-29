@@ -26,10 +26,14 @@ router.get("/login", (req, res) => {
   //res.render("login", {});
 });
 
-router.get(
-  "/logout",
-  passport.authenticate("jwt", { session: false }),logoutUser
-);
+// router.get(
+//   "/logout",
+//   passport.authenticate("jwt", { session: false }),logoutUser
+// );
+
+router.post(
+  "/logout", logoutUser
+)
 
 router.get(
   "/profile",
