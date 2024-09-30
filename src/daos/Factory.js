@@ -2,7 +2,7 @@
 import envs from "../config/Envs.js";
 import mongoose from "mongoose";
 
-let  UserDAO;
+let  UserDAO, ClientDAO;
 
 switch (envs.PERSISTENCE) {
   case "MONGO":
@@ -23,13 +23,13 @@ switch (envs.PERSISTENCE) {
 
     
     const { default: UserMongo } = await import ('./mongo/UserMongo.js')
+    const { default: ClientMongo } = await import ('./mongo/ClientMongo.js')
 
-    
-    
+    ClientDAO = ClientMongo;
     UserDAO = UserMongo;
     break;
   default:
     break;
 }
 
-export {UserDAO}
+export {UserDAO,ClientDAO}
