@@ -44,7 +44,6 @@ const userSchema = new Schema({
         default:'Normal',
         enum: ['Normal', 'Recuiter', 'Admin']
     },
-    candidate:{ type: Schema.Types.ObjectId, ref: 'candidate' },
     //status the email verified or not
     status:{
         type: String,

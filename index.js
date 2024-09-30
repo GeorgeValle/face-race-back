@@ -11,7 +11,11 @@ import express from 'express';
 //import of passport
 import passport from 'passport';
 import cookieParser from "cookie-parser";
+//import routes
+import clientRouter from "./src/routes/ClientRouter.js"
 import sessionRouter from "./src/routes/SessionRouter.js";
+
+//cors
 import cors from "cors";
 import initializatePassport from "./src/config/PassportConfig.js"
 
@@ -72,6 +76,7 @@ if (modoCluster && cluster.isPrimary) {
     //****app.use(passport.session()); 
 
     app.use("/api/session", sessionRouter);
+    app.use("/api/client", clientRouter);
 
      //message for inexistent routes
     app.use((req, res) => {
