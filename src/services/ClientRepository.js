@@ -1,4 +1,4 @@
-//import ClientDTO from '../dto/ClientDTO.js';
+import ClientDTO from '../dto/ClientDTO.js';
 
 
 export default class ClientRepository {
@@ -42,7 +42,9 @@ export default class ClientRepository {
     async getClientByDNI(dni){
         try{
             const client = await this.clientDAO.getByFieldDAO(dni);
-            return client;
+            
+    
+            return client[0];
         }catch(error){
             throw error;
         }
