@@ -1,4 +1,16 @@
 class ClientDTO {
+    _id="";
+    email="";
+    name="";
+    surname="";
+    adrress="";
+    city="";
+    province="";
+    postalCode="";
+    phone="";
+    cel="";
+    description="";
+
     constructor(client) {
         this._id = client._id;
         this.email = client.email;
