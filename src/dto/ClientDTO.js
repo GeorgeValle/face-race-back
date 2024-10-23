@@ -3,7 +3,7 @@ class ClientDTO {
     email="";
     name="";
     surname="";
-    adrress="";
+    address="";
     city="";
     province="";
     postalCode="";
@@ -16,7 +16,7 @@ class ClientDTO {
         this.email = client.email;
         this.name = client.name;
         this.surname = client.surname;
-        this.adrress = client.adrress;
+        this.address = client.address;
         this.city = client.city;
         this.province = client.province;
         this.postalCode = client.postalCode;
