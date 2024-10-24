@@ -63,7 +63,7 @@ export const editClientByDNI = async (req, res) => {
         postalCode:body.postalCode,//parseInt(body.postalCode),
         phone:body.phone,//parseInt(body.postalCode),
         cel:body.cel,
-        description:body.description,
+        description:body.description
     }
     try {
         const client = await clientRepository.updateClientByDNI(dni, data)
