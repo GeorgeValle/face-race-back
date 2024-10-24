@@ -69,7 +69,7 @@ export default class ClientRepository {
     }
     async deleteClient(id) {
         try {
-            const client = await this.clientDAO.deleteUser(id);
+            const client = await this.clientDAO.deleteByIdDAO(id);
             return client;
         } catch (error) {
             throw error;
