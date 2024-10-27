@@ -1,27 +1,27 @@
 import { Router } from "express";
 import {registerSupplier,
-    findSupplierByCUIL,
+    findSupplierByCUIT,
     findSupplierById, 
-    editSupplierByCUIL, 
+    editSupplierByCUIT, 
     editSupplierById, 
     deleteSupplier,
-    deleteSupplierByCUIL
+    deleteSupplierByCUIT
 } from '../controllers/SupplierController.js';
 
 const router = Router();
 
 router.post('/register', registerSupplier);
 
-router.get("/cuil/:cuil", findSupplierByCUIL);
+router.get("/cuit/:cuit", findSupplierByCUIT);
 
 router.get("/id/:id", findSupplierById);
 
 router.put("/id/:id", editSupplierById);
 
-router.put("/cuil/:cuil", editSupplierByCUIL);
+router.put("/cuit/:cuit", editSupplierByCUIT);
 
 router.delete("/delete/:id",deleteSupplier);
 
-router.delete("/cuil/:cuil",deleteSupplierByCUIL);
+router.delete("/cuit/:cuit",deleteSupplierByCUIT);
 
 export default router
