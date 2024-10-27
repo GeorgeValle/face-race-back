@@ -14,7 +14,7 @@ const supplierSchema = new Schema({
             },
             message: 'Invalid email format'}
     },
-    cuil:{
+    cuit:{
         type:Number,
         unique:true,
         index:true,

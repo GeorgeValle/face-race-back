@@ -39,9 +39,9 @@ export default class SupplierRepository {
         }
     }
 
-    async getSupplierByCUIL(cuil){
+    async getSupplierByCUIT(cuit){
         try{
-            const supplier = await this.supplierDAO.getByFieldDAO(cuil);
+            const supplier = await this.supplierDAO.getByFieldDAO(cuit);
             
     
             return supplier[0];
@@ -58,10 +58,10 @@ export default class SupplierRepository {
         }
     }
 
-    async updateSupplierByCUIL(cuil, data){
+    async updateSupplierByCUIT(cuit, data){
         try {
             //const updatedClient = await this.clientDAO.updateByFieldDAO(dni, data);
-            const updatedSupplier = await this.supplierDAO.updateOneDao(data,{cuil: cuil});
+            const updatedSupplier = await this.supplierDAO.updateOneDao(data,{cuit: cuit});
             return updatedSupplier
         }catch(error){
             throw error;
@@ -76,9 +76,9 @@ export default class SupplierRepository {
         }
     }
 
-    async deleteSupplierByCUIL(cuil){
+    async deleteSupplierByCUIT(cuit){
         try{
-            const supplier = await this.supplierDAO.deleteByFieldDAO(cuil);
+            const supplier = await this.supplierDAO.deleteByFieldDAO(cuit);
             return supplier;
         }catch(error){
             throw error;

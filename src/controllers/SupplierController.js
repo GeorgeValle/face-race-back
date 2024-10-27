@@ -3,9 +3,10 @@ import {logInfo, errorLogger} from '../utils/Logger.js'
 //import ClientDTO from '../dto/ClientDTO.js'
 
 export const registerSupplier = async (req, res) => {
+    logInfo.info(`${req.body.CUIL} `)
     try {
         const supplier = await supplierRepository.createSupplier(req.body)
-        logInfo(`Supplier created:`)
+        logInfo.info(`Supplier created:`)
         return res.status(201).json({
             Message:
                 `Se ha registrado al proveedor ${supplier.companyName} alias ${supplier.businessName} `
@@ -15,10 +16,10 @@ export const registerSupplier = async (req, res) => {
     }
 }
 
-export const findSupplierByCUIL = async (req, res) => {
+export const findSupplierByCUIT = async (req, res) => {
     try {
-        const supplier = await supplierRepository.getSupplierByCUIL({ cuil: parseInt(req.params.cuil) })
-        logInfo.info("Supplier encontrado por CUIL")
+        const supplier = await supplierRepository.getSupplierByCUIT({ cuit: parseInt(req.params.cuit) })
+        logInfo.info("Supplier encontrado por CUIT")
         logInfo.info(supplier)
 
         return res.status(200).send({supplier:supplier})
@@ -47,14 +48,14 @@ export const editSupplierById = async (req, res) => {
     }
 }
 
-export const editSupplierByCUIL = async (req, res) => {
-    const cuil = req.params.dni;
-    if(!cuil) return res.status(400).send({message:"Falta el CUIL"})
+export const editSupplierByCUIT = async (req, res) => {
+    const cuit = req.params.cuit;
+    if(!cuit) return res.status(400).send({message:"Falta el CUIT"})
     const body = req.body;
     
     const data = {
         email:body.email,
-        cuil:body.cuil,//parseInt(body.cuil),
+        cuit:body.cuit,//parseInt(body.cuil),
         businessName:body.businessName,
         companyName:body.companyName,
         coreBusiness:body.coreBusiness,
@@ -67,12 +68,12 @@ export const editSupplierByCUIL = async (req, res) => {
         description:body.description
     }
 try {
-        const supplier = await supplierRepository.updateSupplierByCUIL(CUIL, CUIL)
-        if (!supplier){return  res.status(400).send({message:"NO existe cliente"})}
-            logInfo.info("Supplier actualizado por dni")
-        return  res.status(200).send({message:"Suppliere actualizado"})
+        const supplier = await supplierRepository.updateSupplierByCUIT(cuit, data)
+        if (!supplier){return  res.status(400).send({message:"NO existe el Proveedor"})}
+            logInfo.info("Proveedor actualizado por CUIT/DNI")
+        return  res.status(200).send({message:"Proveedor actualizado"})
     } catch (error) {
-        logInfo.info("error por dni")
+        logInfo.info("error por cuit")
         return res.status(500).send({ message: error })
     }
 }
@@ -89,11 +90,11 @@ export const deleteSupplier = async (req, res) => {
     }
 }
 
-export const deleteSupplierByCUIL = async (req, res) => {
-    const  cuil  = parseInt(req.params.cuil);
-    if (!cuil) return res.status(400).json({ message: "Falta el CUIL"})
+export const deleteSupplierByCUIT = async (req, res) => {
+    const  cuit  = parseInt(req.params.cuit);
+    if (!cuit) return res.status(400).json({ message: "Falta el CUIT"})
     try {
-            const supplierDeleted = await supplierRepository.deleteSupplierByCUIL({cuil:cuil})
+            const supplierDeleted = await supplierRepository.deleteSupplierByCUIT({cuit:cuit})
         // if (!supplierDeleted) return res.status(404).json({ message: 'NO existe'})
             res.status(200).send({ message: `el Proveedor fue eliminado correctamente`})
     } catch (error) {
