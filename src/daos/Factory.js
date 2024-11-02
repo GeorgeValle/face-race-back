@@ -1,8 +1,8 @@
-// This File helpus to homogenize the name of DAOS variables.
+// This File help's to homogenize the name of DAOS variables.
 import envs from "../config/Envs.js";
 import mongoose from "mongoose";
 
-let  UserDAO, ClientDAO, SupplierDAO;
+let  UserDAO, ClientDAO, SupplierDAO, ItemDAO;
 
 switch (envs.PERSISTENCE) {
   case "MONGO":
@@ -25,13 +25,15 @@ switch (envs.PERSISTENCE) {
     const { default: UserMongo } = await import ('./mongo/UserMongo.js')
     const { default: ClientMongo } = await import ('./mongo/ClientMongo.js')
     const { default: SupplierMongo } = await import ('./mongo/SupplierMongo.js')
+    const { default: ItemMongo } = await import ('./mongo/ItemMongo.js')
 
     ClientDAO = ClientMongo;
     UserDAO = UserMongo;
     SupplierDAO = SupplierMongo;
+    ItemDAO = ItemMongo;
     break;
   default:
     break;
 }
 
-export {UserDAO,ClientDAO,SupplierDAO}
+export {UserDAO,ClientDAO,SupplierDAO,ItemDAO}

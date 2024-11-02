@@ -1,4 +1,4 @@
-// This Class have patterns of encapsulated methodes for mongo
+// This Class have patterns of encapsulated methods for mongo
 class MongoDAO {
     constructor(options) {
         this.collection = options

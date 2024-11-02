@@ -3,7 +3,7 @@ import ClientModel from './models/ClientModel.js';
 
 
 //create the new class Client
-class Client extends MongoDAO{ //extends methodes in common
+class Client extends MongoDAO{ //extends methods in common
     constructor(){
         super(ClientModel)
     }
