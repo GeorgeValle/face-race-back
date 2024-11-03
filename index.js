@@ -15,6 +15,7 @@ import cookieParser from "cookie-parser";
 import clientRouter from "./src/routes/ClientRouter.js"
 import sessionRouter from "./src/routes/SessionRouter.js"
 import supplierRouter from "./src/routes/SupplierRouter.js"
+import itemRouter from "./src/routes/ClientRouter.js"
 
 //cors
 import cors from "cors";
@@ -79,6 +80,7 @@ if (modoCluster && cluster.isPrimary) {
     app.use("/api/session", sessionRouter);
     app.use("/api/client", clientRouter);
     app.use("/api/supplier", supplierRouter);
+    app.use("/api/item",itemRouter);
 
      //message for inexistent routes
     app.use((req, res) => {
