@@ -15,7 +15,7 @@ import cookieParser from "cookie-parser";
 import clientRouter from "./src/routes/ClientRouter.js"
 import sessionRouter from "./src/routes/SessionRouter.js"
 import supplierRouter from "./src/routes/SupplierRouter.js"
-import itemRouter from "./src/routes/ClientRouter.js"
+import itemRouter from "./src/routes/ItemRouter.js"
 
 //cors
 import cors from "cors";
