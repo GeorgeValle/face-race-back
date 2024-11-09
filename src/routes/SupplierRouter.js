@@ -5,7 +5,8 @@ import {registerSupplier,
     editSupplierByCUIT, 
     editSupplierById, 
     deleteSupplier,
-    deleteSupplierByCUIT
+    deleteSupplierByCUIT,
+    findListSuppliersByName
 } from '../controllers/SupplierController.js';
 
 const router = Router();
@@ -15,6 +16,8 @@ router.post('/register', registerSupplier);
 router.get("/cuit/:cuit", findSupplierByCUIT);
 
 router.get("/id/:id", findSupplierById);
+
+router.get("/list/:businessName", findListSuppliersByName);
 
 router.put("/id/:id", editSupplierById);
 
