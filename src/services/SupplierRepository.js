@@ -49,6 +49,16 @@ export default class SupplierRepository {
             throw error;
         }
     }
+
+    async getListSupplierByName(name) {
+        try {
+            const suppliers = await this.supplierDAO.getSuppliersByName(name, 5);
+            return suppliers;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async updateSupplierById(id, data) {
         try {
             const supplier = await this.supplierDAO.updateByIdDAO(data, {_id:id});

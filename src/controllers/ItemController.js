@@ -42,11 +42,11 @@ export const findItemByName = async (req, res) => {
 
 export const findItemsByCategory = async (req, res) => {
     try {
-        const item = await itemRepository.getItemsByCategory(req.params.category )
+        const items = await itemRepository.getItemsByCategory(req.params.category )
         logInfo.info("Artículos encontrados por Categoría")
-        logInfo.info(item)
+        logInfo.info(items)
 
-        return res.status(200).send({item:item})
+        return res.status(200).send(items)
     } catch (error) {
         res.status(500).json({ message: error })
     }
