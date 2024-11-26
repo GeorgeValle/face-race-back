@@ -21,7 +21,7 @@ export const findClientByDNI = async (req, res) => {
         logInfo.info("Client encontrado por dni")
         logInfo.info(client)
 
-        return res.status(200).send({client:client})
+        return res.status(200).send({data:client})
     } catch (error) {
         res.status(500).json({ message: error })
     }
@@ -39,8 +39,9 @@ export const findClientById = async (req, res) => {
 export const editClientById = async (req, res) => {
     try {
         const data = req.body;
+        if (!data) return res.status(400).json({message:"Faltan los datos"})
         const client = await clientRepository.updateClientById(req.params.id,req.body)
-        if (!client) return  res.status(400).json({mesage:"no se actualizó"})
+        if (!client) return  res.status(400).json({message:"no se actualizó"})
         return res.status(200).json({ message: `Se ha actualizado el cliente ` })
     } catch (error) {
         res.status(500).json({ message: error })

@@ -14,7 +14,9 @@
         "cuil",
         "cuit",
         "DAOS",
+        "datos",
         "desconocido",
+        "editar",
         "eliminado",
         "Emblemas",
         "encontrado",
@@ -22,6 +24,7 @@
         "Equipaje",
         "existe",
         "Falta",
+        "Faltan",
         "Frenos",
         "Generica",
         "Herramientas",
@@ -39,6 +42,7 @@
         "sujetadores",
         "Tableros",
         "Trabas",
+        "Turno",
         "Velocimetros"
     ]
 }
