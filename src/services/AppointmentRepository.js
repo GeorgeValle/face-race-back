@@ -21,9 +21,19 @@ export default class AppointmentRepository {
             throw error;
         }
     }
+
     async getAllAppointments() {
         try {
             const appointment = await this.appointmentDAO.getAllDAO();
+            return appointment;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getAppointmentsByMonthAndYear(month, year) {
+        try {
+            const appointment = await this.appointmentDAO.getAppointmentByMonthAndYear(month,year);
             return appointment;
         } catch (error) {
             throw error;
@@ -38,15 +48,24 @@ export default class AppointmentRepository {
             throw error;
         }
     }
-    getByFieldDAO
+
+    async getAppointmentsByDateAndTime(selectedDate,selectedTime) {
+        try {
+            const appointment = await this.appointmentDAO.getByFieldDAO({shiftDate:selectedDate,timeSlot:selectedTime});
+            return appointment;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
     
 
     async getOneAppointmentByIdClient(idClient){
         try{
             const appointment = await this.appointmentDAO.getAppointmentByIdClient(idClient)
             
-    
-            return appointment[0];
+            console.log("Repo: "+appointment)
+            return appointment;
         }catch(error){
             throw error;
         }

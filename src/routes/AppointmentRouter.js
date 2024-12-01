@@ -2,7 +2,8 @@ import { Router } from "express";
 import {registerAppointment,
     findAppointmentsByShiftDate,
     findAppointmentById, 
-    findAppointmentByShiftDate, 
+    findAppointmentByShiftDate,
+    findAppointmentsByMonthAndYear, 
     findOneAppointmentByIdClient, 
     editAppointmentById,
     deleteAppointment,
@@ -17,6 +18,8 @@ router.post('/register', registerAppointment);
 router.get("/manyByDate/:shiftDate", findAppointmentsByShiftDate);
 
 router.get("/shiftDate/:shiftDate", findAppointmentByShiftDate);
+
+router.get("/date/:month/:year", findAppointmentsByMonthAndYear)
 
 router.get("/client/:id", findOneAppointmentByIdClient);
 

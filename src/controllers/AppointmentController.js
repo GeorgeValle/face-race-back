@@ -1,14 +1,28 @@
 import { appointmentRepository, clientRepository } from "../services/IndexRepository.js"
 import {logInfo, errorLogger} from '../utils/Logger.js'
+import mongoose from "mongoose"
 //import ClientDTO from '../dto/ClientDTO.js'
 
 export const registerAppointment = async (req, res) => {
+    logInfo.info('init shift')
     if (!req.body){res.status(500).json({ message: "faltan los datos" })}
+    const { idClient, date, timeSlot } = req.body
+    logInfo.info(`id: ${idClient}, ${date} , ${timeSlot}`)
+    //const clientObjID = new mongoose.Types.ObjectId(idClient);
+    // const data = {
+    //         client:idClient,
+    //         shiftDate:date,
+    //         timeSlot:timeSlot
+    //}
     try {
-        const appointment = await appointmentRepository.createAppointment(req.body)
-        logInfo(`Appointment created:`)
+        // validate unique appointment
+        const existingAppointment = await appointmentRepository.getAppointmentsByDateAndTime(date,timeSlot)
+        if(existingAppointment.length>0){throw new Error("Ya hay un turno en el mismo horario")}
+        const appointment = await appointmentRepository.createAppointment({client:idClient,shiftDate:date,timeSlot:timeSlot})
+        logInfo.info(`Appointment created:`)
+        
         return res.status(201).json({
-            Message:
+            message:
                 `Se ha registrado el turno`
         })
     } catch (error) {
@@ -50,12 +64,29 @@ export const findAppointmentByShiftDate = async (req, res) => {
     }
 }
 
-export const findOneAppointmentByIdClient = async (req, res) => {
+export const findAppointmentsByMonthAndYear = async (req, res) => {
     try {
-        const appointment = await appointmentRepository.getOneAppointmentByIdClient({client:req.params.id})
-        return res.status(200).send({ data: appointment })
+        const Appointments = await appointmentRepository.getAppointmentsByMonthAndYear(req.params.month,req.params.year)
+
+        const ListAppointment = await Appointments.populate('client').execPopulate();
+        return res.status(200).send({ data: ListAppointment })
     } catch (error) {
         res.status(404).json({ message: error })
+    }
+}
+
+export const findOneAppointmentByIdClient = async (req, res) => {
+    try {
+        logInfo.info("appointment for id Client")
+        const idClient= req.params.id
+        
+        const clientIdObjectId = new mongoose.Types.ObjectId(idClient);
+        logInfo.info(clientIdObjectId)
+        const appointment = await appointmentRepository.getOneAppointmentByIdClient({client:clientIdObjectId})
+        if(!appointment){return res.status(404)}
+        return res.status(200).send({ data: appointment })
+    } catch (error) {
+        res.status(500).json({ message: error })
     }
 }
 

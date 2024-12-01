@@ -8,6 +8,30 @@ const appointmentSchema = new Schema({
         index:true,
         required: true 
         },
+    // person:{
+    //     type:String,
+    //     required:true
+    // },
+    // phone: {
+    //     type: numbe
+    // },
+    // email: {
+    //     type: String,
+    //     lowercase: true,
+    //     trim: true,
+    //     unique:true,
+    //     validate: {
+    //     validator: function(value) {
+    //         return /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value);
+    //         },
+    //         message: 'Invalid email format'}
+    // },
+    // dni:{
+    //     type:Number,
+    //     unique:true,
+    //     index:true,
+    //     trim:true,
+    // },
     shiftDate: { 
             type: Date,
             index:true,
