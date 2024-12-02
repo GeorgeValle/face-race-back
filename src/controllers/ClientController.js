@@ -11,7 +11,7 @@ export const registerClient = async (req, res) => {
                 `Se ha registrado al cliente ${client.name} ${client.surname}`
         })
     } catch (error) {
-        res.status(500).json({ message: error })
+        res.status(500).json({ message: "error to register" })
     }
 }
 

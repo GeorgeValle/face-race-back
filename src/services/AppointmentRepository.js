@@ -21,9 +21,19 @@ export default class AppointmentRepository {
             throw error;
         }
     }
+
     async getAllAppointments() {
         try {
             const appointment = await this.appointmentDAO.getAllDAO();
+            return appointment;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getAppointmentsByMonthAndYear(month, year) {
+        try {
+            const appointment = await this.appointmentDAO.getAppointmentByMonthAndYear(month, year);
             return appointment;
         } catch (error) {
             throw error;
@@ -38,12 +48,19 @@ export default class AppointmentRepository {
             throw error;
         }
     }
-    getByFieldDAO
-    
 
-    async getOneAppointmentByIdClient(idClient){
+    async getAppointmentsByDateAndTime(selectedDate,selectedTime) {
+        try {
+            const appointment = await this.appointmentDAO.getByFieldDAO({shiftDate:selectedDate,timeSlot:selectedTime});
+            return appointment;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    async getOneAppointmentByShiftDate(selectedDate){
         try{
-            const appointment = await this.appointmentDAO.getAppointmentByIdClient(idClient)
+            const appointment = await this.appointmentDAO.getByFieldDAO({shiftDate:selectedDate});
             
     
             return appointment[0];
@@ -52,12 +69,13 @@ export default class AppointmentRepository {
         }
     }
 
-    async getOneAppointmentByShiftDate(selectedDate){
+    async getAppointmentByDNI(dni){
         try{
-            const appointment = await this.appointmentDAO.getByFieldDAO({shiftDate:selectedDate});
+            const appointment = await this.appointmentDAO.getByFieldDAO(dni);
             
-    
+            
             return appointment[0];
+            
         }catch(error){
             throw error;
         }
@@ -72,9 +90,9 @@ export default class AppointmentRepository {
         }
     }
 
-    async updateAppointmentByIdClient(idClient, data){
+    async updateAppointmentByDNI(dni, data){
         try {
-            const updatedAppointment = await this.appointmentDAO.updateOneDao(data,{client: idClient});
+            const updatedAppointment = await this.appointmentDAO.updateOneDao(data,{dni: dni});
             return updatedAppointment
         }catch(error){
             throw error;
@@ -88,14 +106,4 @@ export default class AppointmentRepository {
             throw error;
         }
     }
-
-    async deleteAppointmentByIdClient(idClient){
-        try{
-            const appointment = await this.appointmentDAO.deleteByFieldDAO(idClient);
-            return appointment;
-        }catch(error){
-            throw error;
-        }
-    }
-
 }
