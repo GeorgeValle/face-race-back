@@ -8,19 +8,6 @@ class Appointment extends MongoDAO{ //extends methods in common
         super(AppointmentModel)
     }
 
-    getAppointmentByIdClient = async IdClient => {
-        try {
-
-            let objDAO = await this.collection.findOne({
-                IdClient
-                }).populate('client').exec();
-                //console.log('DAO'+objDAO)
-            return objDAO
-        } catch (err) {
-            console.log(err.message);
-        }
-    }
-
     getAppointmentByMonthAndYear = async (month, year) => {
         try {
 
@@ -32,8 +19,10 @@ class Appointment extends MongoDAO{ //extends methods in common
                     $gte: firstDate,
                     $lt: lastDate
                 }
-                }).populate('client');
+                })
+                
             return objDAO
+            
         } catch (err) {
             console.error(err);
             throw err;

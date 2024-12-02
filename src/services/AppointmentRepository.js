@@ -33,7 +33,7 @@ export default class AppointmentRepository {
 
     async getAppointmentsByMonthAndYear(month, year) {
         try {
-            const appointment = await this.appointmentDAO.getAppointmentByMonthAndYear(month,year);
+            const appointment = await this.appointmentDAO.getAppointmentByMonthAndYear(month, year);
             return appointment;
         } catch (error) {
             throw error;
@@ -58,25 +58,24 @@ export default class AppointmentRepository {
         }
     }
     
-    
-
-    async getOneAppointmentByIdClient(idClient){
-        try{
-            const appointment = await this.appointmentDAO.getAppointmentByIdClient(idClient)
-            
-            console.log("Repo: "+appointment)
-            return appointment;
-        }catch(error){
-            throw error;
-        }
-    }
-
     async getOneAppointmentByShiftDate(selectedDate){
         try{
             const appointment = await this.appointmentDAO.getByFieldDAO({shiftDate:selectedDate});
             
     
             return appointment[0];
+        }catch(error){
+            throw error;
+        }
+    }
+
+    async getAppointmentByDNI(dni){
+        try{
+            const appointment = await this.appointmentDAO.getByFieldDAO(dni);
+            
+            
+            return appointment[0];
+            
         }catch(error){
             throw error;
         }
@@ -91,9 +90,9 @@ export default class AppointmentRepository {
         }
     }
 
-    async updateAppointmentByIdClient(idClient, data){
+    async updateAppointmentByDNI(dni, data){
         try {
-            const updatedAppointment = await this.appointmentDAO.updateOneDao(data,{client: idClient});
+            const updatedAppointment = await this.appointmentDAO.updateOneDao(data,{dni: dni});
             return updatedAppointment
         }catch(error){
             throw error;
@@ -107,14 +106,4 @@ export default class AppointmentRepository {
             throw error;
         }
     }
-
-    async deleteAppointmentByIdClient(idClient){
-        try{
-            const appointment = await this.appointmentDAO.deleteByFieldDAO(idClient);
-            return appointment;
-        }catch(error){
-            throw error;
-        }
-    }
-
 }
