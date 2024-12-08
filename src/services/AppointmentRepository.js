@@ -101,6 +101,7 @@ export default class AppointmentRepository {
     async deleteAppointment(id) {
         try {
             const appointment = await this.appointmentDAO.deleteByIdDAO(id);
+            
             return appointment;
         } catch (error) {
             throw error;

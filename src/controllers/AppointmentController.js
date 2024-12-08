@@ -5,21 +5,28 @@ import {logInfo, errorLogger} from '../utils/Logger.js'
 
 export const registerAppointment = async (req, res) => {
     logInfo.info('init shift create')
-    if (!req.body){res.status(500).json({ message: "faltan los datos" })}
-    const { person, phone, email, dni, date, timeSlot } = req.body
-    logInfo.info(`payload: ${person}, ${date}, ${phone}, ${email}, ${dni}, ${timeSlot}`)
+    if (!req.body){res.status(400).json({ registered:false, message: "faltan los datos" })}
+    const { person, phone, email, dni, shiftDate, timeSlot } = req.body
+    logInfo.info(`payload: ${person}, ${shiftDate}, ${phone}, ${email}, ${dni}, ${timeSlot}`)
     
     try {
         // validate unique appointment
-        const existingAppointment = await appointmentRepository.getAppointmentsByDateAndTime(date,timeSlot)
-        if(existingAppointment.length>0){throw new Error("Ya hay un turno en el mismo horario")}
-        const appointment = await appointmentRepository.createAppointment({person:person, phone:phone, email:email, dni:dni, shiftDate:date, timeSlot:timeSlot})
+        const existingAppointment = await appointmentRepository.getAppointmentsByDateAndTime(shiftDate,timeSlot)
+        if(existingAppointment.length>0){res.status(409).json({ registered:false, message: "Ya hay un turno en el mismo horario" })}
+        const appointment = await appointmentRepository.createAppointment({person:person, phone:phone, email:email, dni:dni, shiftDate:shiftDate, timeSlot:timeSlot})
         logInfo.info(`Appointment created:`)
-        
-        return res.status(201).json({
-            message:
-                `Se ha registrado el turno`
-        })
+        logInfo.info(appointment)
+        const sentAppointment ={
+            _id:appointment._id,
+            person:appointment.person,
+            dni:appointment.dni,
+            email:appointment.email,
+            phone:appointment.phone,
+            shiftDate:appointment.shiftDate,
+            timeSlot:appointment.timeSlot
+        }
+        if (!appointment){res.status(409).json({ registered:false, message: "No se ha agregado el turno" })}
+        return res.status(201).json({data:sentAppointment, registered:true, message:`Se ha registrado el turno`})
     } catch (error) {
         res.status(500).json({ message: error })
     }
@@ -83,10 +90,19 @@ export const findAppointmentsByMonthAndYear = async (req, res) => {
     if (Array.isArray(appointments)) {
         const formattedAppointments = appointments.reduce((acc, appointment) => {
             const key = `${new Date(appointment.shiftDate).toISOString().split('T')[0]}-${appointment.timeSlot}`;
-            acc[key] = appointment;
+            acc[key] = {
+                _id: appointment._id, 
+                person: appointment.person, 
+                dni: appointment.dni, 
+                email: appointment.email, 
+                phone: appointment.phone, 
+                shiftDate: appointment.shiftDate, 
+                timeSlot: appointment.timeSlot 
+            };
             return acc;
         }, {});
-        return res.status(200).send(formattedAppointments)
+        logInfo.info(formattedAppointments)
+        return res.status(200).send({data:Object.values(formattedAppointments)})
     }else{
         throw new Error("Is not Array")
     }
@@ -127,14 +143,18 @@ export const editAppointmentByDNI = async (req, res) => {
 
 
 export const deleteAppointment = async (req, res) => {
+    logInfo.info("init delete by id")
+
     try {
         const id  = req.params.id;
         if (!id) return res.status(400).json({ message: "Falta el Id" });
-        const appointment = await clientRepository.deleteAppointment(id)
-        if (!appointment) return res.status(404).json({ message: '"NO" existe el turno' });
-        res.status(200).send({ message: `el turno fue eliminado correctamente` })
+        const appointment = await appointmentRepository.deleteAppointment(id)
+        logInfo.info(`deleted appointment = ${appointment}`)
+        if (!appointment) return res.status(404).json({ deleted:false, message: ' NO se eliminó ningún turno' });
+        res.status(200).send({ deleted:true, message: `el turno fue eliminado correctamente` })
     } catch (error) {
-        res.status(500).json({ message: error })
+        res.status(500).json({ message: "Error al Eliminar el turno" })
+        logInfo.info(error)
     }
 }
 
