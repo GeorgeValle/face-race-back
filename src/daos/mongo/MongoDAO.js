@@ -87,7 +87,8 @@ class MongoDAO {
     deleteByIdDAO = async (id) => {
         try {
             let objDAO = await this.collection.findByIdAndDelete(id);
-            return objDAO
+            return objDAO;
+            
         } catch (err) {
             console.log(err.message);
         }
@@ -96,7 +97,9 @@ class MongoDAO {
     deleteByFieldDAO = async (field) => {
         try {
             let objDao = await this.collection.deleteOne(field);
-            if (objDao > 0) return true;
+            if (objDao.deletedCount > 0){ 
+                return true
+            }else{ return false};
         } catch (error) {
             return error
         }
