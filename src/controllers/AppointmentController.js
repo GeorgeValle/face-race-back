@@ -97,7 +97,9 @@ export const findAppointmentsByMonthAndYear = async (req, res) => {
                 email: appointment.email, 
                 phone: appointment.phone, 
                 shiftDate: appointment.shiftDate, 
-                timeSlot: appointment.timeSlot 
+                timeSlot: appointment.timeSlot,
+                status: appointment.status,
+                description: appointment.description
             };
             return acc;
         }, {});
