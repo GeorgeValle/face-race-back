@@ -90,10 +90,26 @@ export default class AppointmentRepository {
         }
     }
 
+
     async updateAppointmentByDNI(dni, data){
         try {
             const updatedAppointment = await this.appointmentDAO.updateOneDao(data,{dni: dni});
             return updatedAppointment
+        }catch(error){
+            throw error;
+        }
+    }
+
+    async updateAppointmentStatusByDate(){
+        try{
+            const {dbRead} = await this.appointmentDAO.updateAppointmentStatusByCurrentDate();
+            
+            
+            if(dbRead){
+                return true;
+            }
+            return false
+
         }catch(error){
             throw error;
         }

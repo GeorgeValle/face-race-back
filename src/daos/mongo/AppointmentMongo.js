@@ -29,6 +29,34 @@ class Appointment extends MongoDAO{ //extends methods in common
         }
     }
 
+    updateAppointmentStatusByCurrentDate = async () => {
+        try {
+
+            const currentDate = new Date();
+            
+
+            let objDAO = await this.collection.updateMany({
+                status:'pending',
+                shiftDate:{$lt: currentDate}
+                },
+                { $set: { status: 'missing' } }
+            )
+            
+                //   acknowledged: true,
+                //   modifiedCount: 10,
+                //   matchedCount: 15,
+                //   upsertedCount: 0,
+                //   upsertedId: null
+                // }
+            
+            return {dbRead:objDAO.acknowledged}
+            
+        } catch (err) {
+            
+            throw err;
+        }
+    }
+
 }
 
 export default new Appointment
