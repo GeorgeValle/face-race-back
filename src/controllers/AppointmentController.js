@@ -82,10 +82,25 @@ export const findAppointmentByShiftDate = async (req, res) => {
 }
 
 export const findAppointmentsByMonthAndYear = async (req, res) => {
+
+    const month = req.params.month;
+    const year = req.params.year;
+
     logInfo.info("find many M and Y")
-    logInfo.info(req.params.month, "- y - ",req.params.year)
+    logInfo.info(month, "- y - ", year)
+
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+
     try {
-        const appointments = await appointmentRepository.getAppointmentsByMonthAndYear(req.params.month,req.params.year)
+        if (year == currentYear && month <= currentMonth) {
+            
+            const updated = await appointmentRepository.updateAppointmentStatusByDate()
+            logInfo.info("updated status: ",updated)
+        }
+
+        const appointments = await appointmentRepository.getAppointmentsByMonthAndYear(month, year)
 
     if (Array.isArray(appointments)) {
         const formattedAppointments = appointments.reduce((acc, appointment) => {
@@ -97,11 +112,13 @@ export const findAppointmentsByMonthAndYear = async (req, res) => {
                 email: appointment.email, 
                 phone: appointment.phone, 
                 shiftDate: appointment.shiftDate, 
-                timeSlot: appointment.timeSlot 
+                timeSlot: appointment.timeSlot,
+                status: appointment.status,
+                description: appointment.description
             };
             return acc;
         }, {});
-        logInfo.info(formattedAppointments)
+        logInfo.info("Appointments list: ",formattedAppointments)
         return res.status(200).send({data:Object.values(formattedAppointments)})
     }else{
         throw new Error("Is not Array")

@@ -34,8 +34,16 @@ const appointmentSchema = new Schema({
     timeSlot:{
         type:String, // hour of work
         enum:['10-12','13-15','16-18']
+    },
+    status:{
+        type:String,
+        enum:['pending','canceled','missing','attended'],
+        default:'pending'
+    },
+    description:{
+        type:String,
+        default:''
     }
-    
 },
     {timestamps: true})
 

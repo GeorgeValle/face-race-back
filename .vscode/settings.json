@@ -47,6 +47,7 @@
         "Tableros",
         "Trabas",
         "Turno",
+        "upserted",
         "Velocimetros"
     ]
 }
