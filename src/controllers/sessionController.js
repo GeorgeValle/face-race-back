@@ -44,12 +44,12 @@ export const registerUser = async (req, res) => {
     logInfo.info("User Registered");
     const message = {
       message:
-        "Instructions were sent to your email to activate your account. Otherwise you will not be able to login.",
+        "Sigue las instrucciones enviadas a tu email para activar tu cuenta. De otra manera, no podrás ingresar.",
     };
     const URI = {
       URI: "/api/session/register",
     };
-    res.status(200).send({ message, URI });
+    res.status(200).send({ message:message, URI:URI, success: true });
   } catch (error) {
     errorLogger.fatal("Error to register user: "+error);
     const message = {
@@ -58,7 +58,7 @@ export const registerUser = async (req, res) => {
     const URI = {
       URI: "/api/session/register",
     };
-    res.status(500).send({ message, URI });
+    res.status(500).send({ message:message, URI:URI, success:false });
   }
 };
 
