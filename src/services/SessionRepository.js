@@ -9,6 +9,9 @@ import config from "../config/Envs.js";
 import {generateUserErrorInfo} from '../utils/info.js'
 
 const transporter = nodemailer.createTransport({
+  tls: {
+    rejectUnauthorized: false
+  },
   service: "gmail",
   auth: {
     user: config.USER_MAIL,
@@ -94,8 +97,12 @@ export default class SessionRepository {
   }
 
   async registerUser(user) {
-    if (await this.userDAO.getByFieldDAO({ email: user.email }) == true)
-      throw new Error("User already exist");
+
+    const userFound = await this.userDAO.getByFieldDAO({ email: user.email })
+
+    if (userFound == true && userFound.status == "not verified") throw new Error("Email registrado: Necesitas reenviar el Email de activación");
+    if (userFound == true) throw new Error("Ya existe el usuario");
+    
     const token = jwt.sign({ email: user.email }, "secret", {
       expiresIn: "72h",
     });
@@ -103,8 +110,8 @@ export default class SessionRepository {
     const mailOptions = {
       from: config.USER_MAIL,
       to: user.email,
-      subject: "Verify your email",
-      html: `Click on the following link to verify your email: ${verificationLink}`,
+      subject: "Verificá tu email de nuevo usuario",
+      html: `Click En el siguiente enlace para verificar tu e-mail de usuario: ${verificationLink}`,
     };
     user.password = createHash(user.password);
     if (user.email === config.EMAIL_ADMIN) {
@@ -113,9 +120,9 @@ export default class SessionRepository {
       user.role = "Normal";
     }
 
-    if (!user.name) throw new Error("User name missing");
+    if (!user.name) throw new Error("Falta el nombre");
 
-    if (!user.surname) throw new Error("User surname missing");
+    if (!user.surname) throw new Error("Falta el apellido");
 
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) throw new Error(err);

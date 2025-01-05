@@ -6,6 +6,7 @@
         "actualizado",
         "actualizó",
         "agregado",
+        "apellido",
         "Artículo",
         "Artículos",
         "Categoría",
@@ -34,6 +35,7 @@
         "Indumentaria",
         "mismo",
         "Nombre",
+        "nuevo",
         "Otros",
         "Parabrisas",
         "Parlantes",
@@ -43,11 +45,15 @@
         "registrado",
         "Repuestos",
         "Servicios",
+        "siguiente",
         "sujetadores",
         "Tableros",
         "Trabas",
         "Turno",
         "upserted",
-        "Velocimetros"
+        "usuario",
+        "Velocimetros",
+        "Verificá",
+        "verificar"
     ]
 }
