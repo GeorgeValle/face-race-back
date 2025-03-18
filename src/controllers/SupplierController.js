@@ -14,7 +14,7 @@ export const registerSupplier = async (req, res) => {
         })
     } catch (error) {
         errorLogger.error(error)
-        res.status(500).json({ message: "Error al registrar proveedor" })
+        return res.status(500).json({ message: "Error al registrar proveedor" })
     }
 }
 
@@ -24,9 +24,9 @@ export const findSupplierByCUIT = async (req, res) => {
         logInfo.info("Supplier encontrado por CUIT")
         logInfo.info(supplier)
 
-        return res.status(200).send({supplier:supplier})
+        return res.status(200).send({data:supplier})
     } catch (error) {
-        res.status(500).json({ message: error })
+        return res.status(500).json({ message: error })
     }
 }
 

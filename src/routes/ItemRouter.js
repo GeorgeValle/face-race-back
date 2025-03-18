@@ -4,7 +4,8 @@ import {registerItem,
     findItemByName,
     findItemsByCategory,
     findItemById, 
-    editItemByCode, 
+    editItemByCode,
+    editItemQuantityByCode, 
     editItemById,
     editItemByName,
     deleteItem,
@@ -26,6 +27,8 @@ router.get("/id/:id", findItemById);
 router.put("/id/:id", editItemById);
 
 router.put("/code/:code", editItemByCode);
+
+router.put("/stock/:code", editItemQuantityByCode);
 
 router.put("/name/:name", editItemByName);
 

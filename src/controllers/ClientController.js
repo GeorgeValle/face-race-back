@@ -3,15 +3,17 @@ import {logInfo, errorLogger} from '../utils/Logger.js'
 //import ClientDTO from '../dto/ClientDTO.js'
 
 export const registerClient = async (req, res) => {
+    logInfo.info(`${req.body.dni} `)
     try {
         const client = await clientRepository.createClient(req.body)
-        logInfo(`Client created:`)
-        return res.status(201).json({
-            Message:
+        logInfo.info(`Client created:`)
+        return res.status(201).send({
+            message:
                 `Se ha registrado al cliente ${client.name} ${client.surname}`
         })
     } catch (error) {
-        res.status(500).json({ message: "error to register" })
+        errorLogger.error(error)
+        return res.status(500).json({ message: "error al registrar cliente" })
     }
 }
 
@@ -95,8 +97,8 @@ export const deleteClientByDNI = async (req, res) => {
     try {
             const clientDeleted = await clientRepository.deleteClientByDNI({dni:dni})
         // if (!clientDeleted) return res.status(404).json({ message: 'NO existe'})
-            res.status(200).send({ message: `el cliente fue eliminado correctamente`})
+            return res.status(200).send({ message: `el cliente fue eliminado correctamente`})
     } catch (error) {
-        res.status(500).json({ message: error })
+        return res.status(500).json({ message: error })
     }
 }
