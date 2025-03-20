@@ -52,6 +52,19 @@ export const findItemsByCategory = async (req, res) => {
     }
 }
 
+export const reorderPointList = async(req, res) =>{
+    try {
+        const items = await itemRepository.getItemsByReorderPoint( 3 )
+        logInfo.info("Artículos en punto para re ordenar")
+        logInfo.info(items)
+
+        return res.status(200).send(items)
+    }catch(error){
+        res.status(500).json({message:error})
+    }
+    
+}
+
 export const findItemById = async (req, res) => {
     try {
         const item = await itemRepository.getItemById(req.params.id)
@@ -174,3 +187,4 @@ export const deleteItemByCode = async (req, res) => {
         res.status(500).json({ message: error })
     }
 }
+
