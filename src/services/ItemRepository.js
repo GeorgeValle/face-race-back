@@ -48,6 +48,15 @@ export default class ItemRepository {
         }
     }
 
+    async getItemsByReorderPoint(quantity){
+        try{
+            const items = await this.itemDAO.getByFieldDAO({ stockQuantity: { $lte: quantity } })
+            return items;
+        }catch(error){
+            throw error;
+        }
+    }
+
     async getItemByCode(code){
         try{
             const item = await this.itemDAO.getByFieldDAO(code);

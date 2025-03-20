@@ -9,7 +9,8 @@ import {registerItem,
     editItemById,
     editItemByName,
     deleteItem,
-    deleteItemByCode
+    deleteItemByCode,
+    reorderPointList
 } from '../controllers/ItemController.js';
 
 const router = Router();
@@ -35,5 +36,7 @@ router.put("/name/:name", editItemByName);
 router.delete("/delete/:id",deleteItem);
 
 router.delete("/code/:code",deleteItemByCode);
+
+router.get("/reorder", reorderPointList);
 
 export default router
