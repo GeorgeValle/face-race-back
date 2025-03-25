@@ -19,6 +19,8 @@ export const registerItem = async (req, res) => {
 export const findItemByCode = async (req, res) => {
     try {
         const item = await itemRepository.getItemByCode({ code: parseInt(req.params.code) })
+        if (item.active==false) { throw new Error("el item está inactivo");}
+         //res.status(404).send({message:})}
         logInfo.info("Artículo encontrado por código")
         logInfo.info(item)
 
@@ -31,6 +33,7 @@ export const findItemByCode = async (req, res) => {
 export const findItemByName = async (req, res) => {
     try {
         const item = await itemRepository.getItemByName(req.params.name )
+        if (item.active==false) { throw new Error("el item está inactivo");}
         logInfo.info("Artículo encontrado por nombre")
         logInfo.info(item)
 
@@ -180,7 +183,7 @@ export const deleteItemByCode = async (req, res) => {
     const  code  = parseInt(req.params.code);
     if (!code) return res.status(400).json({ message: "Falta el Code"})
     try {
-            const itemDeleted = await itemRepository.deleteItemByCUIT({code:code})
+            const itemDeleted = await itemRepository.disableItem({code:code})
         // if (!itemDeleted) return res.status(404).json({ message: 'NO existe'})
             res.status(200).send({ message: `el artículo fue eliminado correctamente`})
     } catch (error) {
