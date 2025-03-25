@@ -105,13 +105,31 @@ export default class ItemRepository {
         }
     }
 
-    async deleteItemByCUIT(cuit){
+    async deleteItemByCode(code){
         try{
-            const item = await this.itemDAO.deleteByFieldDAO(cuit);
+            const item = await this.itemDAO.deleteByFieldDAO(code);
             return item;
         }catch(error){
             throw error;
         }
+    }
+
+    async disableItem(code){
+        try{
+        const item = await this.itemDAO.updateOneDao({active:false},code);
+        return item
+        }catch(error){
+            throw error;
+        }
+    }
+
+    async enableItem(code){
+        try{
+            const item = await this.itemDAO.updateOneDao({active:true},{code: code});
+            return updatedItem
+            }catch(error){
+                throw error;
+            }
     }
 
 }

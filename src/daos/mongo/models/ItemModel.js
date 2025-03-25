@@ -24,7 +24,7 @@ const itemSchema = new Schema({
     },
     category:{
         type:String,
-        enum: ['Indumentaria', 'Protección Personal', 'Equipaje', 'Lingas y Trabas', 'Luces', 'Cobertores','Redes y sujetadores','Parlantes','Parabrisas','Herramientas','Emblemas','Tableros y Velocimetros','Pisadores','Escapes','Frenos','Repuestos','Servicios','Otros'],
+        enum: ['Indumentaria', 'Protección Personal', 'Equipaje', 'Lingas y Trabas', 'Luces', 'Cobertores','Redes y sujetadores','Parlantes','Parabrisas','Herramientas','Emblemas','Tableros y Velocimetros','Pisadores','Escapes','Frenos','Repuestos','Servicios','Mantenimiento','Otros'],
     },
     brand:{
         type:String,
@@ -42,7 +42,12 @@ const itemSchema = new Schema({
     },
     description:{
         type:String,
+    },
+    active:{
+        type:Boolean,
+        default:true
     }
+
 },
     {timestamps: true})
 

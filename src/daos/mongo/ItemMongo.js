@@ -14,7 +14,8 @@ class Item extends MongoDAO{ //extends methods in common
                 name:{
                     $regex: letter_name,
                     $options: 'i'
-                    }
+                    },
+                    active:true
                 }).limit(1).exec()
             return objDAO
         } catch (err) {
@@ -29,7 +30,8 @@ class Item extends MongoDAO{ //extends methods in common
                 name:{
                     $regex: letter_name,
                     $options: 'i'
-                    }
+                    },
+                    active:true
                 }).limit(limit).exec()
             return objDAO
         } catch (err) {
@@ -44,7 +46,8 @@ class Item extends MongoDAO{ //extends methods in common
                 category:{
                     $regex: category_name,
                     $options: 'i'
-                    }
+                    },
+                    active:true
                 }).limit(limit).exec()
             return objDAO
         } catch (err) {
