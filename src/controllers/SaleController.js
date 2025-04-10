@@ -3,7 +3,7 @@ import {logInfo, errorLogger} from '../utils/Logger.js'
 //import ClientDTO from '../dto/ClientDTO.js'
 
 export const registerSale = async (req, res) => {
-    logInfo.info(`${req.body.code} `)
+    logInfo.info(`Sale dete: ${req.body.dateSale} `)
     try {
         const sale = await saleRepository.createSale(req.body)
         logInfo.info(`Sale registered:`)
@@ -30,7 +30,7 @@ export const findSaleBySaleNumber = async (req, res) => {
     }
 }
 
-export const findItemByName = async (req, res) => {
+export const findSalesByName = async (req, res) => {
     try {
         const sales = await saleRepository.getSalesByName(req.params.name )
         //if (sale.active==false) { throw new Error("el regsitro de venta está inactivo");}
@@ -42,6 +42,21 @@ export const findItemByName = async (req, res) => {
         res.status(500).json({ message: error })
     }
 } 
+
+export const findSalesByDate = async (req,res) =>{
+    try {
+        const dateInit = new Date (req.params.dateInit.toLocaleString('es-AR', { timeZone: 'America/Buenos_Aires' }))
+        const dateEnd = new Date (req.params.dateEnd.toLocaleString('es-AR', { timeZone: 'America/Buenos_Aires' }))
+        
+        const DateIso = new Date({saleDate: { $gte: dateInit, $lte: dateEnd }});
+        const sales = await saleRepository.getSalesByDate(DateIso)
+        logInfo.info("sales founded by date")
+        logInfo.info(sales)
+        return res.status(200).send({sales:sales})
+        } catch (error) {
+            res.status(500).json({ message: error })
+            }
+        }
 
 
 /* export const findItemsByCategory = async (req, res) => {
@@ -94,9 +109,9 @@ export const editSaleById = async (req, res) => {
 export const editSaleBySaleNumber = async (req, res) => {
     const saleNumber = req.params.saleNumber;
     if(!saleNumber) return res.status(400).send({message:"Falta el número de venta"})
-    const body = req.body;
+    const data = req.body;
     
-    const data = {
+   /* const data = {
         code:body.code,
         name:body.name,
         stockQuantity:body.stockQuantity,
@@ -107,7 +122,7 @@ export const editSaleBySaleNumber = async (req, res) => {
         origin:body.origin,
         warehouseLocation:body.warehouseLocation,
         description:body.description
-    }
+    } */
 try {
         const sale = await saleRepository.updateSaleBySaleNUmber(saleNumber, data)
         if (!sale){return  res.status(400).send({message:"NO existe la venta"})}

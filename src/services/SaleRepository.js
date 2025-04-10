@@ -50,16 +50,16 @@ export default class SaleRepository {
         }
     }
 
-    /* async getItemByCode(code){
+    async getSalesByDate(date){
         try{
-            const item = await this.itemDAO.getByFieldDAO(code);
+            const sales = await this.itemDAO.getByFieldDAO(date);
             
     
-            return item[0];
+            return sales;
         }catch(error){
             throw error;
         }
-    }*/
+    }
     
     async updateSaleById(id, data) {
         try {

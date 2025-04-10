@@ -17,6 +17,7 @@ import sessionRouter from "./src/routes/SessionRouter.js"
 import supplierRouter from "./src/routes/SupplierRouter.js"
 import itemRouter from "./src/routes/ItemRouter.js"
 import appointmentRouter from "./src/routes/AppointmentRouter.js"
+import saleRouter from "./src/routes/SaleRouter.js"
 
 //cors
 import cors from "cors";
@@ -83,6 +84,7 @@ if (modoCluster && cluster.isPrimary) {
     app.use("/api/supplier", supplierRouter);
     app.use("/api/item", itemRouter);
     app.use("/api/appointment", appointmentRouter);
+    app.use("/api/sale", saleRouter);
 
      //message for inexistent routes
     app.use((req, res) => {
