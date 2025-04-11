@@ -2,7 +2,7 @@
 import envs from "../config/Envs.js";
 import mongoose from "mongoose";
 
-let  UserDAO, ClientDAO, SupplierDAO, ItemDAO, AppointmentDAO;
+let  UserDAO, ClientDAO, SupplierDAO, ItemDAO, AppointmentDAO, SaleDAO;
 
 switch (envs.PERSISTENCE) {
   case "MONGO":
