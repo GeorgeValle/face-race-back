@@ -1,10 +1,11 @@
 import { Schema, model } from 'mongoose';
-import mongoose from 'mongoose';
-
-import mongooseCounter from 'mongoose-counters';
+import { getNextAutoIncrement } from './AutoIncrement.js';
 
 
-const counter = mongooseCounter(mongoose);
+//import counters from 'mongoose-counters';
+
+
+//const counter = mongooseCounter(mongoose);
 
 const saleSchema = new Schema({
 
@@ -47,6 +48,11 @@ const saleSchema = new Schema({
 },
     { timestamps: true })
 
-    saleSchema.plugin(counter, { Field: 'saleNumber' });
+saleSchema.pre('save', async function(next) {
+    if (!this.saleNumber) {
+        this.saleNumber = await getNextAutoIncrement('sale');
+    }
+    next();
+});
 
 export default model('sale', saleSchema);

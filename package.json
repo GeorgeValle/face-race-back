@@ -27,7 +27,6 @@
     "jsonwebtoken": "^9.0.2",
     "log4js": "^6.9.1",
     "mongoose": "^8.6.2",
-    "mongoose-counters": "^1.0.2",
     "mongoose-paginate-v2": "^1.8.3",
     "nodemailer": "^6.9.15",
     "passport": "^0.7.0",
