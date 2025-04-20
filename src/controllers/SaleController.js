@@ -93,6 +93,50 @@ export const findSaleById = async (req, res) => {
     }
 }
 
+export const findSalesByMonthAndYear = async (req, res) => {
+
+    const month = req.params.month;
+    const year = req.params.year;
+
+    logInfo.info("find many M and Y")
+    logInfo.info(month, "- y - ", year)
+
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+
+    try {
+        // if (year == currentYear && month <= currentMonth) {
+            
+        //     const updated = await appointmentRepository.updateAppointmentStatusByDate()
+        //     logInfo.info("updated status: ",updated)
+        // }
+
+        const sales = await saleRepository.getSalesByMonthAndYear(month, year)
+
+    // if (Array.isArray(sales)) {
+    //     const formattedSales = sales.reduce((acc, sale) => {
+    //         const key = `${new Date(appointment.shiftDate).toISOString().split('T')[0]}-${sale.saleTime}`;
+    //         acc[key] = {
+    //             _id: appointment._id, 
+    //             person: appointment.person, 
+    //             dni: appointment.dni, 
+    //             email: appointment.email, 
+    //             phone: appointment.phone, 
+    //             shiftDate: appointment.shiftDate, 
+    //             timeSlot: appointment.timeSlot,
+    //             status: appointment.status,
+    //             description: appointment.description
+    //         };
+        
+        //logInfo.info("Appointments list: ",formattedAppointments)
+        //return res.status(200).send({data:Object.values(sales)})
+        return res.status(200).send({data:sales})
+    }catch{
+        throw new Error("Is not Array")
+    }
+}
+
 
 
 export const editSaleById = async (req, res) => {

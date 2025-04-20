@@ -1,13 +1,18 @@
 import { Schema, model } from 'mongoose';
+import { getNextAutoIncrement } from './AutoIncrement.js';
 
-import sequence from 'mongoose-sequence';
+
+//import counters from 'mongoose-counters';
+
+
+//const counter = mongooseCounter(mongoose);
 
 const saleSchema = new Schema({
 
     saleNumber: {
         type: Number,
         index: true,
-        unique: true,
+        
     },
     payment: {
         type: Array,
@@ -19,12 +24,13 @@ const saleSchema = new Schema({
     },
     description: {
         type: String,
+        default:""
     },
     saleDate: {
         type: Date,
     },
     saleTime:{
-        type:Date
+        type:String
     },
     active: {
         type: Boolean,
@@ -43,22 +49,11 @@ const saleSchema = new Schema({
 },
     { timestamps: true })
 
-const sequencePlugin = sequence(mongoose);
-saleSchema.plugin(sequencePlugin, {
-    field: 'numberSale',
-    startAt: 4012,
-    incrementBy: 1,
-    id: 'sale_number'
-});
-
-
-
-sequencePlugin.createSequence('sale_number', (err, sequence) => {
-    if (err) {
-        console.error(err);
-    } else {
-        console.log('Secuencia creada');
+saleSchema.pre('save', async function(next) {
+    if (!this.saleNumber) {
+        this.saleNumber = await getNextAutoIncrement('sale');
     }
+    next();
 });
 
 export default model('sale', saleSchema);
