@@ -52,11 +52,20 @@ export default class SaleRepository {
 
     async getSalesByDate(date){
         try{
-            const sales = await this.itemDAO.getByFieldDAO(date);
+            const sales = await this.saleDAO.getByFieldDAO(date);
             
     
             return sales;
         }catch(error){
+            throw error;
+        }
+    }
+
+    async getSalesByMonthAndYear (month, year) {
+        try {
+            const sales = await this.saleDAO.getSalesByMonthAndYear(month, year);
+            return sales;
+        } catch (error) {
             throw error;
         }
     }

@@ -9,7 +9,8 @@ import {registerSale,
     deleteSale,
     //deleteSaleBySaleNumber,
     enableSaleBySaleNumber,
-    disableSaleBySaleNumber
+    disableSaleBySaleNumber,
+    findSalesByMonthAndYear
     
 } from '../controllers/SaleController.js';
 
@@ -22,6 +23,8 @@ router.get("/name/:name", findSalesByName);
 router.get("/number/:saleNumber", findSaleBySaleNumber);
 
 router.get("/date/:dateInit/:dateEnd",findSalesByDate);
+
+router.get("/month/:month/year/:year", findSalesByMonthAndYear);
 
 router.get("/id/:id", findSaleById);
 

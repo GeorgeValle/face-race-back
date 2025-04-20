@@ -24,12 +24,13 @@ const saleSchema = new Schema({
     },
     description: {
         type: String,
+        default:""
     },
     saleDate: {
         type: Date,
     },
     saleTime:{
-        type:Date
+        type:String
     },
     active: {
         type: Boolean,
