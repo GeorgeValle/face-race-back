@@ -3,12 +3,12 @@ import {logInfo, errorLogger} from '../utils/Logger.js'
 //import ClientDTO from '../dto/ClientDTO.js'
 
 export const registerSale = async (req, res) => {
-    logInfo.info(`Sale dete: ${req.body.dateSale} `)
+    logInfo.info(`Sale date: ${req.body.saleDate} `)
     try {
         const sale = await saleRepository.createSale(req.body)
         logInfo.info(`Sale registered:`)
         return res.status(201).json({
-            Message:
+            message:
                 `Se ha registrado la venta Número: ${sale.saleNumber} correctamente`
         })
     } catch (error) {
@@ -18,7 +18,7 @@ export const registerSale = async (req, res) => {
 
 export const findSaleBySaleNumber = async (req, res) => {
     try {
-        const sale = await saleRepository.getDaleBySaleNumber({ saleNumber: parseInt(req.params.saleNumber) })
+        const sale = await saleRepository.getSaleBySaleNumber({ saleNumber: parseInt(req.params.saleNumber) })
         if (sale.active==false) { throw new Error("el registro de venta está inactivo");}
          //res.status(404).send({message:})}
         logInfo.info("Venta encontrada por Número de Venta")
@@ -142,7 +142,7 @@ export const findSalesByMonthAndYear = async (req, res) => {
 export const editSaleById = async (req, res) => {
     try {
         //const data = req.body;
-        const sale = await saleRepository.updateSalemById(req.params.id, req.body);
+        const sale = await saleRepository.updateSaleById(req.params.id, req.body);
         if (!sale) return  res.status(400).json({message:"No se actualizó la venta"});
         return res.status(200).json({ message: `Se ha actualizado el registro de venta ` })
     } catch (error) {
@@ -168,7 +168,7 @@ export const editSaleBySaleNumber = async (req, res) => {
         description:body.description
     } */
 try {
-        const sale = await saleRepository.updateSaleBySaleNUmber(saleNumber, data)
+        const sale = await saleRepository.updateSaleBySaleNumber(saleNumber, data)
         if (!sale){return  res.status(400).send({message:"NO existe la venta"})}
             logInfo.info("sale updated by saleNumber")
         return  res.status(200).send({message:"Venta actualizada"})
