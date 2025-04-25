@@ -7,7 +7,7 @@ export default class SaleRepository {
 
     }
     async createSale(data) {
-        try {item
+        try {
             const sale = await this.saleDAO.saveDataDAO(data);
             return sale;
         } catch (error) {
@@ -41,7 +41,7 @@ export default class SaleRepository {
 
     
 
-    async getSaleByNumberSale(saleNumber){
+    async getSaleBySaleNumber(saleNumber){
         try{
             const sale = await this.saleDAO.getByFieldDAO({ saleNumber:  saleNumber  })
             return sale[0];
