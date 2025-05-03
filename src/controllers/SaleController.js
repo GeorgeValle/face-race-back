@@ -16,6 +16,37 @@ export const registerSale = async (req, res) => {
     }
 }
 
+export const findTotalPaymentsByYear = async (req, res) => {
+    try {
+        const year  = req.params.year; // Tomar el año desde la URL
+    logInfo.info(year)
+        if (!year ) {
+            return res.status(400).json({ error: "Debe proporcionar un año válido." });
+        }
+
+        //const saleRepository = new SaleRepository(Sale);
+        const result = await saleRepository.getTotalOfPaymentsByYear(parseInt(year));
+
+        // Convertir el resultado en un objeto con nombres de meses
+        const monthNames = [
+            "enero", "febrero", "marzo", "abril", "mayo", "junio",
+            "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+        ];
+
+        const formattedResult = result.reduce((acc, item) => {
+            acc[monthNames[item._id.month - 1]] = item.totalAmount;
+            return acc;
+        }, {});
+        
+        logInfo.info(formattedResult)
+        logInfo.info("Venta por año")
+        return res.json({data:formattedResult});
+    } catch (error) {
+        console.error("Error al obtener pagos por mes:", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+}
+
 export const findSaleBySaleNumber = async (req, res) => {
     try {
         const sale = await saleRepository.getSaleBySaleNumber({ saleNumber: parseInt(req.params.saleNumber) })
@@ -163,7 +194,7 @@ export const findSalesByMonthAndYear = async (req, res) => {
 
 
         const formattedSales = formatSales(sales)
-        logInfo.info(formattedSales)
+        
         return res.status(200).send({ data: formattedSales })
     } catch {
         throw new Error("Is not Array")
