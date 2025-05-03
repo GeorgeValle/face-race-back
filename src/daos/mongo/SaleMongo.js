@@ -15,7 +15,7 @@ class Sale extends MongoDAO{ //extends methods in common
             const lastDate = new Date(year, month,1);
 
             let objDAO = await this.collection.find({
-                shiftDate:{
+                saleDate:{
                     $gte: firstDate,
                     $lt: lastDate
                 }

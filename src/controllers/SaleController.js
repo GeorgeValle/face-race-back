@@ -1,5 +1,5 @@
 import { saleRepository } from "../services/IndexRepository.js"
-import {logInfo, errorLogger} from '../utils/Logger.js'
+import { logInfo, errorLogger } from '../utils/Logger.js'
 //import ClientDTO from '../dto/ClientDTO.js'
 
 export const registerSale = async (req, res) => {
@@ -19,12 +19,12 @@ export const registerSale = async (req, res) => {
 export const findSaleBySaleNumber = async (req, res) => {
     try {
         const sale = await saleRepository.getSaleBySaleNumber({ saleNumber: parseInt(req.params.saleNumber) })
-        if (sale.active==false) { throw new Error("el registro de venta está inactivo");}
-         //res.status(404).send({message:})}
+        if (sale.active == false) { throw new Error("el registro de venta está inactivo"); }
+        //res.status(404).send({message:})}
         logInfo.info("Venta encontrada por Número de Venta")
         logInfo.info(sale)
 
-        return res.status(200).send({sale:sale})
+        return res.status(200).send({ sale: sale })
     } catch (error) {
         res.status(500).json({ message: error })
     }
@@ -32,31 +32,31 @@ export const findSaleBySaleNumber = async (req, res) => {
 
 export const findSalesByName = async (req, res) => {
     try {
-        const sales = await saleRepository.getSalesByName(req.params.name )
+        const sales = await saleRepository.getSalesByName(req.params.name)
         //if (sale.active==false) { throw new Error("el regsitro de venta está inactivo");}
         logInfo.info("sales founded by client name")
         logInfo.info(sales)
 
-        return res.status(200).send({sales:sales})
+        return res.status(200).send({ sales: sales })
     } catch (error) {
         res.status(500).json({ message: error })
     }
-} 
+}
 
-export const findSalesByDate = async (req,res) =>{
+export const findSalesByDate = async (req, res) => {
     try {
-        const dateInit = new Date (req.params.dateInit.toLocaleString('es-AR', { timeZone: 'America/Buenos_Aires' }))
-        const dateEnd = new Date (req.params.dateEnd.toLocaleString('es-AR', { timeZone: 'America/Buenos_Aires' }))
-        
-        const DateIso = new Date({saleDate: { $gte: dateInit, $lte: dateEnd }});
+        const dateInit = new Date(req.params.dateInit.toLocaleString('es-AR', { timeZone: 'America/Buenos_Aires' }))
+        const dateEnd = new Date(req.params.dateEnd.toLocaleString('es-AR', { timeZone: 'America/Buenos_Aires' }))
+
+        const DateIso = new Date({ saleDate: { $gte: dateInit, $lte: dateEnd } });
         const sales = await saleRepository.getSalesByDate(DateIso)
         logInfo.info("sales founded by date")
         logInfo.info(sales)
-        return res.status(200).send({sales:sales})
-        } catch (error) {
-            res.status(500).json({ message: error })
-            }
-        }
+        return res.status(200).send({ sales: sales })
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
 
 
 /* export const findItemsByCategory = async (req, res) => {
@@ -105,34 +105,67 @@ export const findSalesByMonthAndYear = async (req, res) => {
     const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear();
 
+    // const formatSales = (sales) => {
+    //     return sales.reduce((formattedSales, sale) => {
+    //         const { active, createdAt, updatedAt, __v, ...filteredSale } = sale;
+    //         formattedSales.push(filteredSale);
+    //         return formattedSales;
+    //     }, []);
+    // };
+    const formatSales = (sales) => {
+        if (!Array.isArray(sales)) {
+            throw new Error('El parámetro recibido no es un array');
+        }
+
+        return sales.reduce((formattedSales, sale) => {
+            formattedSales.push({
+                _id: sale._id,
+                payment: sale.payment,
+                itemList: sale.itemList,
+                description: sale.description,
+                saleDate: sale.saleDate,
+                saleTime: sale.saleTime,
+                paid: sale.paid,
+                client: sale.client,
+                saleNumber: sale.saleNumber
+            });
+            return formattedSales;
+        }, []);
+    };
+
+
     try {
         // if (year == currentYear && month <= currentMonth) {
-            
+
         //     const updated = await appointmentRepository.updateAppointmentStatusByDate()
         //     logInfo.info("updated status: ",updated)
         // }
 
         const sales = await saleRepository.getSalesByMonthAndYear(month, year)
 
-    // if (Array.isArray(sales)) {
-    //     const formattedSales = sales.reduce((acc, sale) => {
-    //         const key = `${new Date(appointment.shiftDate).toISOString().split('T')[0]}-${sale.saleTime}`;
-    //         acc[key] = {
-    //             _id: appointment._id, 
-    //             person: appointment.person, 
-    //             dni: appointment.dni, 
-    //             email: appointment.email, 
-    //             phone: appointment.phone, 
-    //             shiftDate: appointment.shiftDate, 
-    //             timeSlot: appointment.timeSlot,
-    //             status: appointment.status,
-    //             description: appointment.description
-    //         };
-        
+        // 
+        //     const formattedSales = sales.reduce((acc, sale) => {
+        //         
+        //         acc[key] = {
+        //             _id: appointment._id, 
+        //             person: appointment.person, 
+        //             dni: appointment.dni, 
+        //             email: appointment.email, 
+        //             phone: appointment.phone, 
+        //             shiftDate: appointment.shiftDate, 
+        //             timeSlot: appointment.timeSlot,
+        //             status: appointment.status,
+        //             description: appointment.description
+        //        
+
         //logInfo.info("Appointments list: ",formattedAppointments)
         //return res.status(200).send({data:Object.values(sales)})
-        return res.status(200).send({data:sales})
-    }catch{
+
+
+        const formattedSales = formatSales(sales)
+        logInfo.info(formattedSales)
+        return res.status(200).send({ data: formattedSales })
+    } catch {
         throw new Error("Is not Array")
     }
 }
@@ -143,7 +176,7 @@ export const editSaleById = async (req, res) => {
     try {
         //const data = req.body;
         const sale = await saleRepository.updateSaleById(req.params.id, req.body);
-        if (!sale) return  res.status(400).json({message:"No se actualizó la venta"});
+        if (!sale) return res.status(400).json({ message: "No se actualizó la venta" });
         return res.status(200).json({ message: `Se ha actualizado el registro de venta ` })
     } catch (error) {
         res.status(500).json({ message: error })
@@ -152,26 +185,26 @@ export const editSaleById = async (req, res) => {
 
 export const editSaleBySaleNumber = async (req, res) => {
     const saleNumber = req.params.saleNumber;
-    if(!saleNumber) return res.status(400).send({message:"Falta el número de venta"})
+    if (!saleNumber) return res.status(400).send({ message: "Falta el número de venta" })
     const data = req.body;
-    
-   /* const data = {
-        code:body.code,
-        name:body.name,
-        stockQuantity:body.stockQuantity,
-        price:body.price,
-        category:body.category,
-        brand:body.brand,
-        model:body.model,
-        origin:body.origin,
-        warehouseLocation:body.warehouseLocation,
-        description:body.description
-    } */
-try {
+
+    /* const data = {
+         code:body.code,
+         name:body.name,
+         stockQuantity:body.stockQuantity,
+         price:body.price,
+         category:body.category,
+         brand:body.brand,
+         model:body.model,
+         origin:body.origin,
+         warehouseLocation:body.warehouseLocation,
+         description:body.description
+     } */
+    try {
         const sale = await saleRepository.updateSaleBySaleNumber(saleNumber, data)
-        if (!sale){return  res.status(400).send({message:"NO existe la venta"})}
-            logInfo.info("sale updated by saleNumber")
-        return  res.status(200).send({message:"Venta actualizada"})
+        if (!sale) { return res.status(400).send({ message: "NO existe la venta" }) }
+        logInfo.info("sale updated by saleNumber")
+        return res.status(200).send({ message: "Venta actualizada" })
     } catch (error) {
         logInfo.info("error to update by SaleNumber")
         return res.status(500).send({ message: error })
@@ -229,7 +262,7 @@ try {
 
 export const deleteSale = async (req, res) => {
     try {
-        const id  = req.params.id;
+        const id = req.params.id;
         if (!id) return res.status(400).json({ message: "Falta el Id" });
         const sale = await saleRepository.deleteSale(id)
         if (!sale) return res.status(404).json({ message: '"NO" existe La venta' });
@@ -240,24 +273,24 @@ export const deleteSale = async (req, res) => {
 }
 
 export const disableSaleBySaleNumber = async (req, res) => {
-    const  saleNumber  = parseInt(req.params.saleNumber);
-    if (!saleNumber) return res.status(400).json({ message: "Falta el Número de venta"})
+    const saleNumber = parseInt(req.params.saleNumber);
+    if (!saleNumber) return res.status(400).json({ message: "Falta el Número de venta" })
     try {
-            const saleDisabled = await saleRepository.disableSale({saleNumber:saleNumber})
+        const saleDisabled = await saleRepository.disableSale({ saleNumber: saleNumber })
         // if (!itemDeleted) return res.status(404).json({ message: 'NO existe'})
-            res.status(200).send({ message: `La venta fue Desahabilitada correctamente`})
+        res.status(200).send({ message: `La venta fue Desahabilitada correctamente` })
     } catch (error) {
         res.status(500).json({ message: error })
     }
 }
 
 export const enableSaleBySaleNumber = async (req, res) => {
-    const  saleNumber  = parseInt(req.params.saleNumber);
-    if (!saleNumber) return res.status(400).json({ message: "Falta el Número de venta"})
+    const saleNumber = parseInt(req.params.saleNumber);
+    if (!saleNumber) return res.status(400).json({ message: "Falta el Número de venta" })
     try {
-            const saleEnabled = await saleRepository.enableSale({saleNumber:saleNumber})
+        const saleEnabled = await saleRepository.enableSale({ saleNumber: saleNumber })
         // if (!itemDeleted) return res.status(404).json({ message: 'NO existe'})
-            res.status(200).send({ message: `La venta fue habilitada correctamente`})
+        res.status(200).send({ message: `La venta fue habilitada correctamente` })
     } catch (error) {
         res.status(500).json({ message: error })
     }
