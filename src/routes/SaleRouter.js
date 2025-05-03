@@ -10,8 +10,8 @@ import {registerSale,
     //deleteSaleBySaleNumber,
     enableSaleBySaleNumber,
     disableSaleBySaleNumber,
-    findSalesByMonthAndYear
-    
+    findSalesByMonthAndYear,
+    findTotalPaymentsByYear
 } from '../controllers/SaleController.js';
 
 const router = Router();
@@ -21,6 +21,8 @@ router.post('/register', registerSale);
 router.get("/name/:name", findSalesByName);
 
 router.get("/number/:saleNumber", findSaleBySaleNumber);
+
+router.get("/year/:year",findTotalPaymentsByYear);
 
 router.get("/date/:dateInit/:dateEnd",findSalesByDate);
 
