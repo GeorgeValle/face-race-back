@@ -11,7 +11,9 @@ import {registerSale,
     enableSaleBySaleNumber,
     disableSaleBySaleNumber,
     findSalesByMonthAndYear,
-    findTotalPaymentsByYear
+    findTotalPaymentsByYear,
+    findSalesByDniAndYear,
+    findTotalPaymentsByTypeAndMonth
 } from '../controllers/SaleController.js';
 
 const router = Router();
@@ -27,6 +29,10 @@ router.get("/year/:year",findTotalPaymentsByYear);
 router.get("/date/:dateInit/:dateEnd",findSalesByDate);
 
 router.get("/month/:month/year/:year", findSalesByMonthAndYear);
+
+router.get("/payments/:type/:year", findTotalPaymentsByTypeAndMonth)
+
+router.get("/client/:dni/:year", findSalesByDniAndYear);
 
 router.get("/id/:id", findSaleById);
 

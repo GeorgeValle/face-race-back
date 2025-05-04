@@ -18,9 +18,9 @@ export const registerSale = async (req, res) => {
 
 export const findTotalPaymentsByYear = async (req, res) => {
     try {
-        const year  = req.params.year; // Tomar el año desde la URL
-    logInfo.info(year)
-        if (!year ) {
+        const year = req.params.year; // Tomar el año desde la URL
+        logInfo.info(year)
+        if (!year) {
             return res.status(400).json({ error: "Debe proporcionar un año válido." });
         }
 
@@ -37,12 +37,59 @@ export const findTotalPaymentsByYear = async (req, res) => {
             acc[monthNames[item._id.month - 1]] = item.totalAmount;
             return acc;
         }, {});
-        
+
         logInfo.info(formattedResult)
         logInfo.info("Venta por año")
-        return res.json({data:formattedResult});
+        return res.json({ data: formattedResult });
     } catch (error) {
         console.error("Error al obtener pagos por mes:", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+}
+
+export const findSalesByDniAndYear = async (req, res) => {
+    try {
+        const { dni, year } = req.params; // queries params
+        logInfo.info(`${dni} - ${year}`)
+        if (!dni || !year) {
+            return res.status(400).json({ error: "Debe proporcionar un DNI y un año válidos." });
+        }
+
+        //const saleRepository = new SaleRepository(Sale);
+        const sales = await saleRepository.getSalesByDniAndYear(Number(dni), Number(year));
+
+        return res.json({ data: sales });
+    } catch (error) {
+        console.error("Error al obtener ventas:", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+};
+
+export const findTotalPaymentsByTypeAndMonth = async (req, res) => {
+    try {
+        const { type, year } = req.params; // Obtener parámetros de la URL
+
+        if (!type || !year ) {
+            return res.status(400).json({ error: "Debe proporcionar un tipo de pago y un año válido." });
+        }
+
+        //const saleRepository = new SaleRepository(Sale);
+        const result = await saleRepository.getTotalPaymentsByTypeAndMonth(type, Number(year));
+
+        // Convertir el resultado en un objeto con nombres de meses
+        const monthNames = [
+            "enero", "febrero", "marzo", "abril", "mayo", "junio",
+            "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+        ];
+
+        const formattedResult = result.reduce((acc, item) => {
+            acc[monthNames[item._id.month - 1]] = item.totalAmount;
+            return acc;
+        }, {});
+
+        return res.json(formattedResult);
+    }catch (error) {
+        console.error("Error al obtener pagos por tipo y mes:", error);
         res.status(500).json({ error: "Error interno del servidor" });
     }
 }
@@ -132,9 +179,9 @@ export const findSalesByMonthAndYear = async (req, res) => {
     logInfo.info("find many M and Y")
     logInfo.info(month, "- y - ", year)
 
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentYear = currentDate.getFullYear();
+    // const currentDate = new Date();
+    // const currentMonth = currentDate.getMonth() + 1;
+    // const currentYear = currentDate.getFullYear();
 
     // const formatSales = (sales) => {
     //     return sales.reduce((formattedSales, sale) => {
@@ -166,35 +213,11 @@ export const findSalesByMonthAndYear = async (req, res) => {
 
 
     try {
-        // if (year == currentYear && month <= currentMonth) {
-
-        //     const updated = await appointmentRepository.updateAppointmentStatusByDate()
-        //     logInfo.info("updated status: ",updated)
-        // }
 
         const sales = await saleRepository.getSalesByMonthAndYear(month, year)
 
-        // 
-        //     const formattedSales = sales.reduce((acc, sale) => {
-        //         
-        //         acc[key] = {
-        //             _id: appointment._id, 
-        //             person: appointment.person, 
-        //             dni: appointment.dni, 
-        //             email: appointment.email, 
-        //             phone: appointment.phone, 
-        //             shiftDate: appointment.shiftDate, 
-        //             timeSlot: appointment.timeSlot,
-        //             status: appointment.status,
-        //             description: appointment.description
-        //        
-
-        //logInfo.info("Appointments list: ",formattedAppointments)
-        //return res.status(200).send({data:Object.values(sales)})
-
-
         const formattedSales = formatSales(sales)
-        
+
         return res.status(200).send({ data: formattedSales })
     } catch {
         throw new Error("Is not Array")

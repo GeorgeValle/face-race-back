@@ -8,6 +8,7 @@ class Sale extends MongoDAO { //extends methods in common
         super(SaleModel)
     }
 
+
     getSalesByMonthAndYear = async (month, year) => {
         try {
 
@@ -30,26 +31,61 @@ class Sale extends MongoDAO { //extends methods in common
     }
 
 
+    getSalesByDniAndYear = async (dni, year) => {
+        return await this.collection.find({
+            "client.dni": dni, // Client DNI filter
+            saleDate: {
+                $gte: new Date(`${year}-01-01T00:00:00.000Z`), // Init of year
+                $lte: new Date(`${year}-12-31T23:59:59.999Z`)  // End of year
+            }
+        }).lean(); // return pure js objects
+    }
 
-    getTotalPaymentsByMonth = async (year)=> {
+
+    getTotalPaymentsByMonth = async (year) => {
         return await this.collection.aggregate([
             {
                 $match: {
                     saleDate: {
-                        $gte: new Date(`${year}-01-01T00:00:00.000Z`), // Inicio del año
-                        $lte: new Date(`${year}-12-31T23:59:59.999Z`)  // Fin del año
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`), // Init of year
+                        $lte: new Date(`${year}-12-31T23:59:59.999Z`)  // End of year
                     }
                 }
             },
-            { $unwind: "$payment" }, // Descomponer el array de payments
+            { $unwind: "$payment" }, // breakdown the array of payments
             {
                 $group: {
-                    _id: { month: { $month: "$saleDate" } }, // Agrupar por mes
-                    totalAmount: { $sum: { $toDouble: "$payment.amount" } } // Convertir y sumar montos
+                    _id: { month: { $month: "$saleDate" } }, // Group by month
+                    totalAmount: { $sum: { $toDouble: "$payment.amount" } } // convert and add amounts
                 }
             },
-            { $sort: { "_id.month": 1 } } // Ordenar por mes
+            { $sort: { "_id.month": 1 } } // Order by month
         ]);
     }
+
+    async getTotalPaymentsByTypeAndMonth(type, year) {
+        return await this.collection.aggregate([
+            {
+                $match: {
+                    saleDate: {
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`), // Init of year
+                        $lte: new Date(`${year}-12-31T23:59:59.999Z`)  // End of year
+                    }
+                }
+            },
+            { $unwind: "$payment" }, // breakdown the array of payments on each sale
+            { $match: { "payment.type": type } }, // filter by  type payment
+            {
+                $group: {
+                    _id: { month: { $month: "$saleDate" } }, // group by month
+                    totalAmount: { $sum: { $toDouble: "$payment.amount" } } // add all amount of specific type
+                }
+            },
+            { $sort: { "_id.month": 1 } } // order by month
+        ]);
+    }
+
+
+
 }
 export default new Sale
