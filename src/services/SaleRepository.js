@@ -70,6 +70,24 @@ export default class SaleRepository {
         }
     }
 
+    async getSalesByDniAndYear (dni, year) {
+        try{
+            const sales = this.saleDAO.getSalesByDniAndYear(dni, year)
+            return sales;
+        }catch(error){
+            throw error;
+        }
+    }
+
+    async getTotalPaymentsByTypeAndMonth (type, year){
+        try{
+            const amountSales = await this.saleDAO.getTotalPaymentsByTypeAndMonth(type, year)
+            return amountSales;
+        }catch(error){
+            throw error;
+        }
+    }
+
     async getTotalOfPaymentsByYear (year) {
         try{
         const sales = await this.saleDAO.getTotalPaymentsByMonth(year);
