@@ -72,7 +72,7 @@ export const findTotalPaymentsByTypeAndMonth = async (req, res) => {
         if (!type || !year ) {
             return res.status(400).json({ error: "Debe proporcionar un tipo de pago y un año válido." });
         }
-
+            logInfo.info(`${type} - ${year}`)
         //const saleRepository = new SaleRepository(Sale);
         const result = await saleRepository.getTotalPaymentsByTypeAndMonth(type, Number(year));
 
@@ -86,11 +86,12 @@ export const findTotalPaymentsByTypeAndMonth = async (req, res) => {
             acc[monthNames[item._id.month - 1]] = item.totalAmount;
             return acc;
         }, {});
-
-        return res.json(formattedResult);
+        logInfo.info(formattedResult)
+        return res.json({data:formattedResult});
+        
     }catch (error) {
         console.error("Error al obtener pagos por tipo y mes:", error);
-        res.status(500).json({ error: "Error interno del servidor" });
+        res.status(500).json({ error: "Error interno del servidor", message: "Error Interno" });
     }
 }
 
