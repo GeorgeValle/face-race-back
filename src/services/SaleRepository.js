@@ -88,6 +88,15 @@ export default class SaleRepository {
         }
     }
 
+    async getTotalProductAmountByCodeAndMonth (code, year){
+        try{
+            const amountSales = await this.saleDAO.getTotalProductAmountByCodeAndMonth(code, year)
+            return amountSales;
+        }catch(error){
+            throw error;
+        }
+    }
+
     async getTotalOfPaymentsByYear (year) {
         try{
         const sales = await this.saleDAO.getTotalPaymentsByMonth(year);
