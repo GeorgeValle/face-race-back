@@ -13,12 +13,13 @@ import {registerSale,
     findSalesByMonthAndYear,
     findTotalPaymentsByYear,
     findSalesByDniAndYear,
-    findTotalPaymentsByTypeAndMonth
+    findTotalPaymentsByTypeAndMonth,
+    findTotalProductAmountByCodeAndMonth
 } from '../controllers/SaleController.js';
 
 const router = Router();
 
-router.post('/register', registerSale);
+router.post("/register", registerSale);
 
 router.get("/name/:name", findSalesByName);
 
@@ -31,6 +32,8 @@ router.get("/date/:dateInit/:dateEnd",findSalesByDate);
 router.get("/month/:month/year/:year", findSalesByMonthAndYear);
 
 router.get("/payments/:type/:year", findTotalPaymentsByTypeAndMonth)
+
+router.get("/item/:code/:year", findTotalProductAmountByCodeAndMonth)
 
 router.get("/client/:dni/:year", findSalesByDniAndYear);
 

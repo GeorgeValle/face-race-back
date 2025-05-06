@@ -85,6 +85,28 @@ class Sale extends MongoDAO { //extends methods in common
         ]);
     }
 
+    async getTotalProductAmountByCodeAndMonth(code, year) {
+        return await this.collection.aggregate([
+            {
+                $match: {
+                    saleDate: {
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`), // Int of year
+                        $lte: new Date(`${year}-12-31T23:59:59.999Z`)  // end of year
+                    }
+                }
+            },
+            { $unwind: "$itemList" }, // breakdown the array of item i each sale
+            { $match: { "itemList.code": code } }, // filtered item by code
+            {
+                $group: {
+                    _id: { month: { $month: "$saleDate" } }, // group by month 
+                    totalAmount: { $sum: { $toDouble: "$itemList.amount" } } // add amount of all items filtered
+                }
+            },
+            { $sort: { "_id.month": 1 } } // order by month
+        ]);
+    }
+
 
 
 }
