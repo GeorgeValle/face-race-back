@@ -129,13 +129,25 @@ export const findTotalPaymentsByTypeAndMonth = async (req, res) => {
 
 export const findSaleBySaleNumber = async (req, res) => {
     try {
-        const sale = await saleRepository.getSaleBySaleNumber({ saleNumber: parseInt(req.params.saleNumber) })
+        const sale = await saleRepository.getSaleBySaleNumber( Number(req.params.saleNumber) )
         if (sale.active == false) { throw new Error("el registro de venta está inactivo"); }
         //res.status(404).send({message:})}
         logInfo.info("Venta encontrada por Número de Venta")
-        logInfo.info(sale)
+        //logInfo.info(sale)
 
-        return res.status(200).send({ sale: sale })
+        const formattedSale ={
+            _id:sale._id,
+            saleNumber: sale.saleNumber,
+            saleDate: sale.saleDate,
+            saleTime: sale.saleTime,
+            payment:sale.payment,
+            itemList:sale.itemList,
+            description: sale.description,
+            client: sale.client,
+            paid: sale.paid
+        }
+        logInfo.info(formattedSale)
+        return res.status(200).send({ data: formattedSale })
     } catch (error) {
         res.status(500).json({ message: error })
     }
