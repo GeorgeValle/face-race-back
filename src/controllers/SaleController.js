@@ -332,11 +332,9 @@ export const editDescriptionBySaleNumber = async (req, res) => {
 export const editPaidStateBySaleNumber = async (req, res) => {
     const saleNumber = req.params.saleNumber;
     if (!saleNumber) return res.status(400).send({ message: "Falta el número de venta" })
-    //const data = req.body;
 
-    const data = {
-        paid:req.body.paid
-    }
+    const data = { paid:req.body.paid }
+    logInfo.info(data)
     try {
         const sale = await saleRepository.updateSaleBySaleNumber(saleNumber, data)
         if (!sale) { return res.status(400).send({ message: "NO existe la venta" }) }

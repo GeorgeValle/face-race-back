@@ -45,7 +45,7 @@ router.put("/id/:id", editSaleById);
 
 router.put("/paid/:saleNumber",editPaidStateBySaleNumber);
 
-router.put ("/description/SaleNumber",editDescriptionBySaleNumber);
+router.put ("/description/:saleNumber",editDescriptionBySaleNumber);
 
 router.put("/number/:saleNumber", editSaleBySaleNumber);
 
