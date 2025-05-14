@@ -14,7 +14,9 @@ import {registerSale,
     findTotalPaymentsByYear,
     findSalesByDniAndYear,
     findTotalPaymentsByTypeAndMonth,
-    findTotalProductAmountByCodeAndMonth
+    findTotalProductAmountByCodeAndMonth,
+    editDescriptionBySaleNumber,
+    editPaidStateBySaleNumber
 } from '../controllers/SaleController.js';
 
 const router = Router();
@@ -40,6 +42,10 @@ router.get("/client/:dni/:year", findSalesByDniAndYear);
 router.get("/id/:id", findSaleById);
 
 router.put("/id/:id", editSaleById);
+
+router.put("/paid/:saleNumber",editPaidStateBySaleNumber);
+
+router.put ("/description/:saleNumber",editDescriptionBySaleNumber);
 
 router.put("/number/:saleNumber", editSaleBySaleNumber);
 

@@ -310,6 +310,42 @@ export const editSaleBySaleNumber = async (req, res) => {
     }
 }
 
+export const editDescriptionBySaleNumber = async (req, res) => {
+    const saleNumber = req.params.saleNumber;
+    if (!saleNumber) return res.status(400).send({ message: "Falta el número de venta" })
+    //const data = req.body;
+
+    const data = {
+        description:req.body.description
+    }
+    try {
+        const sale = await saleRepository.updateSaleBySaleNumber(saleNumber, data)
+        if (!sale) { return res.status(400).send({ message: "NO existe la venta" }) }
+        logInfo.info(" description sale updated by saleNumber")
+        return res.status(200).send({ message: "Descripción de venta actualizada" })
+    } catch (error) {
+        logInfo.info("error to update description by SaleNumber")
+        return res.status(500).send({ message: error })
+    }
+}
+
+export const editPaidStateBySaleNumber = async (req, res) => {
+    const saleNumber = req.params.saleNumber;
+    if (!saleNumber) return res.status(400).send({ message: "Falta el número de venta" })
+
+    const data = { paid:req.body.paid }
+    logInfo.info(data)
+    try {
+        const sale = await saleRepository.updateSaleBySaleNumber(saleNumber, data)
+        if (!sale) { return res.status(400).send({ message: "NO existe la venta" }) }
+        logInfo.info(" description sale updated by saleNumber")
+        return res.status(200).send({ message: "Estado del pago de la venta actualizado" })
+    } catch (error) {
+        logInfo.info("error to update paid state by SaleNumber")
+        return res.status(500).send({ message: error })
+    }
+}
+
 /*export const editItemQuantityByCode = async (req, res) => {
     const code = req.params.code;
     if(!code) return res.status(400).send({message:"Falta el código"})
