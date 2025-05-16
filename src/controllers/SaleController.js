@@ -132,8 +132,9 @@ export const findSaleBySaleNumber = async (req, res) => {
         const sale = await saleRepository.getSaleBySaleNumber( Number(req.params.saleNumber) )
         if (sale.active == false) { throw new Error("el registro de venta está inactivo"); }
         //res.status(404).send({message:})}
-        logInfo.info("Venta encontrada por Número de Venta")
-        //logInfo.info(sale)
+        
+        logInfo.info("Sale Founded by Sale Number")
+        
 
         const formattedSale ={
             _id:sale._id,
@@ -162,7 +163,7 @@ export const findSalesByName = async (req, res) => {
 
         return res.status(200).send({ sales: sales })
     } catch (error) {
-        res.status(500).json({ message: error })
+        return res.status(500).json({ message: error })
     }
 }
 
