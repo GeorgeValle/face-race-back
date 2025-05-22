@@ -1,36 +1,36 @@
 export default class PurchaseRepository {
-    constructor(saleDAO) {
-        this.saleDAO = saleDAO;
+    constructor(purchaseDAO) {
+        this.purchaseDAO = purchaseDAO;
 
     }
-    async createSale(data) {
+    async createPurchase(data) {
         try {
-            const sale = await this.saleDAO.saveDataDAO(data);
-            return sale;
+            const purchase = await this.purchaseDAO.saveDataDAO(data);
+            return purchase;
         } catch (error) {
             throw error;
         }
     }
-    async getSaleById(id) {
+    async getPurchaseById(id) {
         try {
-            const sale = await this.saleDAO.getByIdDAO(id);
-            return sale;
+            const purchase = await this.purchaseDAO.getByIdDAO(id);
+            return purchase;
         } catch (error) {
             throw error;
         }
     }
-    async getSales() {
+    async getPurchases() {
         try {
-            const sales = await this.sale.getAllDAO();
-            return sales;
+            const purchases = await this.purchase.getAllDAO();
+            return purchases;
         } catch (error) {
             throw error;
         }
     }
-    async getSalesByName(name) {
+    async getPurchasesByName(name) {
         try {
-            const sales = await this.itemDAO.getOneSalesByName(name);
-            return sales;
+            const purchases = await this.purchaseDAO.getOneSalesByName(name);
+            return purchases;
         } catch (error) {
             throw error;
         }
@@ -38,39 +38,39 @@ export default class PurchaseRepository {
 
     
 
-    async getSaleBySaleNumber(saleNumber){
+    async getPurchaseBySaleNumber(purchaseNumber){
         try{
-            const sale = await this.saleDAO.getByFieldDAO({ saleNumber:  saleNumber  })
-            return sale[0];
+            const purchase = await this.purchaseDAO.getByFieldDAO({ purchaseNumber:  purchaseNumber  })
+            return purchase[0];
         }catch(error){
             throw error;
         }
     }
 
-    async getSalesByDate(date){
+    async getPurchasesByDate(date){
         try{
-            const sales = await this.saleDAO.getByFieldDAO(date);
+            const purchases = await this.purchaseDAO.getByFieldDAO(date);
             
     
-            return sales;
+            return purchases;
         }catch(error){
             throw error;
         }
     }
 
-    async getSalesByMonthAndYear (month, year) {
+    async getPurchasesByMonthAndYear (month, year) {
         try {
-            const sales = await this.saleDAO.getSalesByMonthAndYear(month, year);
-            return sales;
+            const purchases = await this.purchaseDAO.getSalesByMonthAndYear(month, year);
+            return purchases;
         } catch (error) {
             throw error;
         }
     }
 
-    async getSalesByDniAndYear (dni, year) {
+    async getPurchaseByDniAndYear (dni, year) {
         try{
-            const sales = this.saleDAO.getSalesByDniAndYear(dni, year)
-            return sales;
+            const purchases = this.purchaseDAO.getSalesByDniAndYear(dni, year)
+            return purchases;
         }catch(error){
             throw error;
         }
@@ -78,8 +78,8 @@ export default class PurchaseRepository {
 
     async getTotalPaymentsByTypeAndMonth (type, year){
         try{
-            const amountSales = await this.saleDAO.getTotalPaymentsByTypeAndMonth(type, year)
-            return amountSales;
+            const amountPurchases = await this.purchaseDAO.getTotalPaymentsByTypeAndMonth(type, year)
+            return amountPurchases;
         }catch(error){
             throw error;
         }
@@ -87,8 +87,8 @@ export default class PurchaseRepository {
 
     async getTotalProductAmountByCodeAndMonth (code, year){
         try{
-            const amountSales = await this.saleDAO.getTotalProductAmountByCodeAndMonth(code, year)
-            return amountSales;
+            const amountPurchases = await this.purchaseDAO.getTotalProductAmountByCodeAndMonth(code, year)
+            return amountPurchases;
         }catch(error){
             throw error;
         }
@@ -96,27 +96,27 @@ export default class PurchaseRepository {
 
     async getTotalOfPaymentsByYear (year) {
         try{
-        const sales = await this.saleDAO.getTotalPaymentsByMonth(year);
-        return sales;
+        const purchases = await this.purchaseDAO.getTotalPaymentsByMonth(year);
+        return purchases;
         }catch(error){
             throw error;
         }
     }
     
-    async updateSaleById(id, data) {
+    async updatePurchaseById(id, data) {
         try {
-            const sale = await this.saleDAO.updateByIdDAO(data, {_id:id});
-            return sale;
+            const purchase = await this.purchaseDAO.updateByIdDAO(data, {_id:id});
+            return purchase;
         } catch (error) {
             throw error;
         }
     }
-
-    async updateSaleBySaleNumber(saleNumber, data){
+    //warning look his Mongo class
+    async updatePurchaseByPurchaseNumber(purchaseNumber, data){
         try {
             //const updatedClient = await this.clientDAO.updateByFieldDAO(dni, data);
-            const updatedSale = await this.saleDAO.updateOneDao(data,{saleNumber: saleNumber});
-            return updatedSale
+            const updatedPurchase = await this.purchaseDAO.updateOneDao(data,{purchaseNumber: purchaseNumber});
+            return updatedPurchase
         }catch(error){
             throw error;
         }
@@ -134,35 +134,36 @@ export default class PurchaseRepository {
 
     async deleteSale(id) {
         try {
-            const sale = await this.saleDAO.deleteByIdDAO(id);
-            return sale;
+            const purchase = await this.purchaseDAO.deleteByIdDAO(id);
+            return purchase;
         } catch (error) {
             throw error;
         }
     }
 
-    async deleteSaleBySaleNumber(saleNumber){
+    async deleteSaleByPurchaseNumber(purchaseNumber){
         try{
-            const sale = await this.saleDAO.deleteByFieldDAO({saleNumber: saleNumber});
-            return sale;
+            const purchase = await this.purchaseDAO.deleteByFieldDAO({purchaseNumber: purchaseNumber});
+            return purchase;
         }catch(error){
             throw error;
         }
     }
 
-    async disableSale(SaleNumber){
+    //look this!!!
+    async disableSale(purchaseNumber){
         try{
-        const sale = await this.saleDAO.updateOneDao({active:false},sale);
-        return sale
+        const purchase = await this.purchaseDAO.updateOneDao({active:false},purchaseNumber);
+        return purchase
         }catch(error){
             throw error;
         }
     }
 
-    async enableSale(saleNumber){
+    async enableSale(purchaseNumber){
         try{
-            const updatedSale = await this.saleDAO.updateOneDao({active:true},{saleNumber: saleNumber});
-            return updatedSale
+            const updatedPurchase = await this.purchaseDAO.updateOneDao({active:true},{purchaseNumber: purchaseNumber});
+            return updatedPurchase
             }catch(error){
                 throw error;
             }

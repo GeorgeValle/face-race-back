@@ -153,9 +153,10 @@ export default class SaleRepository {
         }
     }
 
-    async disableSale(SaleNumber){
+    //look this!!
+    async disableSale(saleNumber){
         try{
-        const sale = await this.saleDAO.updateOneDao({active:false},sale);
+        const sale = await this.saleDAO.updateOneDao({active:false},saleNumber);
         return sale
         }catch(error){
             throw error;
