@@ -8,8 +8,8 @@ export const registerItem = async (req, res) => {
         const item = await itemRepository.createItem(req.body)
         logInfo.info(`Item created:`)
         return res.status(201).json({
-            Message:
-                `Se ha registrado al proveedor ${item.companyName} alias ${item.businessName} `
+            message:
+                `Se ha registrado el artículo ${item.name} marca: ${item.brand} `
         })
     } catch (error) {
         res.status(500).json({ message: error })
