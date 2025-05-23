@@ -1,5 +1,5 @@
 import {
-   UserDAO,ClientDAO,SupplierDAO,ItemDAO,AppointmentDAO, SaleDAO
+   UserDAO,ClientDAO,SupplierDAO,ItemDAO,AppointmentDAO, SaleDAO, PurchaseDAO
 } from "../daos/Factory.js";
 
 import UserRepository from "./UserRepository.js";
@@ -9,6 +9,7 @@ import SupplierRepository from "./SupplierRepository.js";
 import ItemRepository from "./ItemRepository.js"
 import AppointmentRepository from "./AppointmentRepository.js"
 import SaleRepository from "./SaleRepository.js";
+import PurchaseRepository from "./PurchaseRepository.js";
 
 
 
@@ -24,4 +25,6 @@ export const itemRepository = new ItemRepository(ItemDAO);
 
 export const appointmentRepository = new AppointmentRepository(AppointmentDAO);
 
-export const saleRepository = new SaleRepository(SaleDAO);  
+export const saleRepository = new SaleRepository(SaleDAO);
+
+export const purchaseRepository = new PurchaseRepository(PurchaseDAO);
