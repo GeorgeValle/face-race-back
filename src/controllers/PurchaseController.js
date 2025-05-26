@@ -1,16 +1,16 @@
 import { purchaseRepository } from "../services/IndexRepository.js"
 import { logInfo, errorLogger } from '../utils/Logger.js'
-import { editItemQuantityByCode } from "./ItemController.js"
+//import { editItemQuantityByCode } from "./ItemController.js"
 //import ClientDTO from '../dto/ClientDTO.js'
 
 export const registerPurchase = async (req, res) => {
-    logInfo.info(`Purchase date: ${req.body.saleDate} `)
+    logInfo.info(`Purchase date: ${req.body.purchaseDate} `)
     try {
-        const purchase = await purchaseRepository.createSale(req.body)
-        logInfo.info(`Sale registered:`)
+        const purchase = await purchaseRepository.createPurchase(req.body)
+        logInfo.info(`Purchase registered:`)
         return res.status(201).json({
             message:
-                `Se ha registrado la venta Número: ${sale.saleNumber} correctamente`
+                `Se ha registrado la compra Número: ${purchase.purchaseNumber} correctamente`
         })
     } catch (error) {
         res.status(500).json({ message: error })
@@ -79,20 +79,20 @@ export const findTotalProductAmountByCodeAndMonth = async (req, res) => {
     }
 }
 
-export const findPurchasesByDniAndYear = async (req, res) => {
+export const findPurchasesByCuitAndYear = async (req, res) => {
     try {
-        const { dni, year } = req.params; // queries params
-        logInfo.info(`${dni} - ${year}`)
-        if (!dni || !year) {
-            return res.status(400).json({ error: "Debe proporcionar un DNI y un año válidos." });
+        const { cuit, year } = req.params; // queries params
+        logInfo.info(`${cuit} - ${year}`)
+        if (!cuit || !year) {
+            return res.status(400).json({ error: "Debe proporcionar un Cuit y un año válidos." });
         }
 
         //const saleRepository = new SaleRepository(Sale);
-        const purchases = await purchaseRepository.getSalesByDniAndYear(Number(dni), Number(year));
+        const purchases = await purchaseRepository.getSalesByDniAndYear(Number(cuit), Number(year));
 
         return res.json({ data: purchases });
     } catch (error) {
-        console.error("Error al obtener ventas:", error);
+        console.error("Error al obtener comras:", error);
         res.status(500).json({ error: "Error interno del servidor" });
     }
 };
@@ -106,7 +106,7 @@ export const findTotalPaymentsByTypeAndMonth = async (req, res) => {
         }
         logInfo.info(`${type} - ${year}`)
         //const saleRepository = new SaleRepository(Sale);
-        const result = await saleRepository.getTotalPaymentsByTypeAndMonth(type, Number(year));
+        const result = await purchaseRepository.getTotalPaymentsByTypeAndMonth(type, Number(year));
 
         // Convertir el resultado en un objeto con nombres de meses
         const monthNames = [
@@ -129,26 +129,26 @@ export const findTotalPaymentsByTypeAndMonth = async (req, res) => {
 
 export const findPurchaseByPurchaseNumber = async (req, res) => {
     try {
-        const sale = await saleRepository.getSaleBySaleNumber( Number(req.params.saleNumber) )
-        if (sale.active == false) { throw new Error("el registro de venta está inactivo"); }
+        const purchase = await purchaseRepository.getPurchaseByPurchaseNumber( Number(req.params.purchaseNumber) )
+        if (purchase.active == false) { throw new Error("el registro de compra está inactivo"); }
         //res.status(404).send({message:})}
         
-        logInfo.info("Sale Founded by Sale Number")
+        logInfo.info("Purchase founded by purchase number")
         
 
-        const formattedSale ={
-            _id:sale._id,
-            saleNumber: sale.saleNumber,
-            saleDate: sale.saleDate,
-            saleTime: sale.saleTime,
-            payment:sale.payment,
-            itemList:sale.itemList,
-            description: sale.description,
-            client: sale.client,
-            paid: sale.paid
+        const formattedPurchase ={
+            _id:purchase._id,
+            purchaseNumber: sale.saleNumber,
+            purchaseDate: sale.saleDate,
+            //saleTime: sale.saleTime,
+            payment:purchase.payment,
+            itemList:purchase.itemList,
+            description: purchase.description,
+            supplier: purchase.supplier,
+            paid: purchase.paid
         }
-        logInfo.info(formattedSale)
-        return res.status(200).send({ data: formattedSale })
+        logInfo.info(formattedPurchase)
+        return res.status(200).send({ data: formattedPurchase })
     } catch (error) {
         res.status(500).json({ message: error })
     }
@@ -156,12 +156,12 @@ export const findPurchaseByPurchaseNumber = async (req, res) => {
 
 export const findPurchasesByName = async (req, res) => {
     try {
-        const sales = await saleRepository.getSalesByName(req.params.name)
+        const purchases = await purchaseRepository.getPurchasesByName(req.params.name)
         //if (sale.active==false) { throw new Error("el regsitro de venta está inactivo");}
-        logInfo.info("sales founded by client name")
-        logInfo.info(sales)
+        logInfo.info("Purchases founded by supplier name")
+        logInfo.info(purchases)
 
-        return res.status(200).send({ sales: sales })
+        return res.status(200).send({ data: purchases })
     } catch (error) {
         return res.status(500).json({ message: error })
     }
@@ -172,11 +172,11 @@ export const findPurchasesByDate = async (req, res) => {
         const dateInit = new Date(req.params.dateInit.toLocaleString('es-AR', { timeZone: 'America/Buenos_Aires' }))
         const dateEnd = new Date(req.params.dateEnd.toLocaleString('es-AR', { timeZone: 'America/Buenos_Aires' }))
 
-        const DateIso = new Date({ saleDate: { $gte: dateInit, $lte: dateEnd } });
-        const sales = await saleRepository.getSalesByDate(DateIso)
-        logInfo.info("sales founded by date")
-        logInfo.info(sales)
-        return res.status(200).send({ sales: sales })
+        const DateIso = new Date({ purchaseDate: { $gte: dateInit, $lte: dateEnd } });
+        const purchases = await purchaseRepository.getPurchasesByDate(DateIso)
+        logInfo.info("purchases founded by date")
+        logInfo.info(purchases)
+        return res.status(200).send({ date: purchases })
     } catch (error) {
         res.status(500).json({ message: error })
     }
@@ -210,8 +210,8 @@ export const findPurchasesByDate = async (req, res) => {
 
 export const findPurchaseById = async (req, res) => {
     try {
-        const sale = await purchaseRepository.getPurchaseById(req.params.id)
-        return res.status(200).send({ data: sale })
+        const purchase = await purchaseRepository.getPurchaseById(req.params.id)
+        return res.status(200).send({ data: purchase })
     } catch (error) {
         res.status(404).json({ message: error })
     }
@@ -243,15 +243,15 @@ export const findPurchasesByMonthAndYear = async (req, res) => {
 
         return purchases.reduce((formattedPurchases, purchase) => {
             formattedPurchases.push({
-                _id: sale._id,
-                payment: sale.payment,
-                itemList: sale.itemList,
-                description: sale.description,
-                saleDate: sale.saleDate,
-                saleTime: sale.saleTime,
-                paid: sale.paid,
-                client: sale.client,
-                saleNumber: sale.saleNumber
+                _id: purchase._id,
+                payment: purchase.payment,
+                itemList: purchase.itemList,
+                description: purchase.description,
+                purchaseDate: purchase.purchaseDate,
+                //saleTime: sale.saleTime,
+                paid:  purchase.paid,
+                supplier: purchase.supplier,
+                supplierNumber: supplier.supplierNumber
             });
             return formattedPurchases;
         }, []);
@@ -276,8 +276,8 @@ export const editPurchaseById = async (req, res) => {
     try {
         //const data = req.body;
         const purchase = await purchaseRepository.updatePurchaseById(req.params.id, req.body);
-        if (!purchase) return res.status(400).json({ message: "No se actualizó la venta" });
-        return res.status(200).json({ message: `Se ha actualizado el registro de venta ` })
+        if (!purchase) return res.status(400).json({ message: "No se actualizó la compra" });
+        return res.status(200).json({ message: `Se ha actualizado el registro de compra ` })
     } catch (error) {
         res.status(500).json({ message: error })
     }
@@ -285,7 +285,7 @@ export const editPurchaseById = async (req, res) => {
 
 export const editPurchaseByPurchaseNumber = async (req, res) => {
     const purchaseNumber = req.params.purchaseNumber;
-    if (!saleNumber) return res.status(400).send({ message: "Falta el número de venta" })
+    if (!purchaseNumber) return res.status(400).send({ message: "Falta el número de compra" })
     const data = req.body;
 
     /* const data = {
@@ -301,17 +301,17 @@ export const editPurchaseByPurchaseNumber = async (req, res) => {
          description:body.description
      } */
     try {
-        const purchase = await saleRepository.updateSaleBySaleNumber(saleNumber, data)
-        if (!purchase) { return res.status(400).send({ message: "NO existe la venta" }) }
-        logInfo.info("sale updated by saleNumber")
+        const purchase = await purchaseRepository.updatePurchaseByPurchaseNumber(purchaseNumber, data)
+        if (!purchase) { return res.status(400).send({ message: "NO existe la compra" }) }
+        logInfo.info("purchase updated by purchaseNumber")
         return res.status(200).send({ message: "Venta actualizada" })
     } catch (error) {
-        logInfo.info("error to update by SaleNumber")
+        logInfo.info("error to update by purchaseNumber")
         return res.status(500).send({ message: error })
     }
 }
 
-export const editDescriptionBySaleNumber = async (req, res) => {
+export const editDescriptionByPurchaseNumber = async (req, res) => {
     const saleNumber = req.params.saleNumber;
     if (!saleNumber) return res.status(400).send({ message: "Falta el número de venta" })
     //const data = req.body;
@@ -320,29 +320,29 @@ export const editDescriptionBySaleNumber = async (req, res) => {
         description:req.body.description
     }
     try {
-        const sale = await purchaseRepository.updatePurchaseByPurchaseNumber(saleNumber, data)
-        if (!sale) { return res.status(400).send({ message: "NO existe la venta" }) }
-        logInfo.info(" description purchase updated by saleNumber")
-        return res.status(200).send({ message: "Descripción de venta actualizada" })
+        const purchase = await purchaseRepository.updatePurchaseByPurchaseNumber(purchaseNumber, data)
+        if (!purchase) { return res.status(400).send({ message: "NO existe la compra" }) }
+        logInfo.info(" description purchase updated by purchaseNumber")
+        return res.status(200).send({ message: "Descripción de compra actualizada" })
     } catch (error) {
         logInfo.info("error to update description by PurchaseNumber")
         return res.status(500).send({ message: error })
     }
 }
 
-export const editPaidStateBySaleNumber = async (req, res) => {
-    const saleNumber = req.params.saleNumber;
-    if (!saleNumber) return res.status(400).send({ message: "Falta el número de venta" })
+export const editPaidStateByPurchaseNumber = async (req, res) => {
+    const purchaseNumber = req.params.saleNumber;
+    if (!purchaseNumber) return res.status(400).send({ message: "Falta el número de compra" })
 
     const data = { paid:req.body.paid }
     logInfo.info(data)
     try {
-        const sale = await saleRepository.updateSaleBySaleNumber(saleNumber, data)
-        if (!sale) { return res.status(400).send({ message: "NO existe la venta" }) }
-        logInfo.info(" description sale updated by saleNumber")
-        return res.status(200).send({ message: "Estado del pago de la venta actualizado" })
+        const purchase = await purchaseRepository.updatePurchaseByPurchaseNumber(purchaseNumber, data)
+        if (!purchase) { return res.status(400).send({ message: "NO existe la compra" }) }
+        logInfo.info(" description purchase updated by purchaseNumber")
+        return res.status(200).send({ message: "Estado del pago de la compra actualizado" })
     } catch (error) {
-        logInfo.info("error to update paid state by SaleNumber")
+        logInfo.info("error to update paid state by PurchaseNumber")
         return res.status(500).send({ message: error })
     }
 }
@@ -396,23 +396,23 @@ try {
 */
 
 
-export const deleteSale = async (req, res) => {
+export const deletePurchase = async (req, res) => {
     try {
         const id = req.params.id;
         if (!id) return res.status(400).json({ message: "Falta el Id" });
-        const sale = await saleRepository.deleteSale(id)
-        if (!sale) return res.status(404).json({ message: '"NO" existe La venta' });
+        const purchase = await purchaseRepository.deletePurchase(id)
+        if (!purchase) return res.status(404).json({ message: '"NO" existe La compra' });
         res.status(200).send({ message: `La venta fue eliminada correctamente` })
     } catch (error) {
         res.status(500).json({ message: error })
     }
 }
 
-export const disableSaleBySaleNumber = async (req, res) => {
-    const saleNumber = parseInt(req.params.saleNumber);
-    if (!saleNumber) return res.status(400).json({ message: "Falta el Número de venta" })
+export const disablePurchaseByPurchaseNumber = async (req, res) => {
+    const purchaseNumber = parseInt(req.params.purchaseNumber);
+    if (!purchaseNumber) return res.status(400).json({ message: "Falta el Número de venta" })
     try {
-        const saleDisabled = await saleRepository.disableSale({ saleNumber: saleNumber })
+        const purchaseDisabled = await purchaseRepository.disablePurchase({ purchaseNumber: purchaseNumber })
         // if (!itemDeleted) return res.status(404).json({ message: 'NO existe'})
         res.status(200).send({ message: `La venta fue Desahabilitada correctamente` })
     } catch (error) {
@@ -420,13 +420,13 @@ export const disableSaleBySaleNumber = async (req, res) => {
     }
 }
 
-export const enableSaleBySaleNumber = async (req, res) => {
-    const saleNumber = parseInt(req.params.saleNumber);
-    if (!saleNumber) return res.status(400).json({ message: "Falta el Número de venta" })
+export const enablePurchaseByPurchaseNumber = async (req, res) => {
+    const purchaseNumber = parseInt(req.params.purchaseNumber);
+    if (!purchaseNumber) return res.status(400).json({ message: "Falta el Número de compra" })
     try {
-        const saleEnabled = await saleRepository.enableSale({ saleNumber: saleNumber })
+        const purchaseEnabled = await purchaseRepository.enableSale({ purchaseNumber: purchaseNumber })
         // if (!itemDeleted) return res.status(404).json({ message: 'NO existe'})
-        res.status(200).send({ message: `La venta fue habilitada correctamente` })
+        res.status(200).send({ message: `La compra fue habilitada correctamente` })
     } catch (error) {
         res.status(500).json({ message: error })
     }
