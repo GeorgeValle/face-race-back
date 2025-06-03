@@ -88,7 +88,7 @@ export const findPurchasesByCuitAndYear = async (req, res) => {
         }
 
         //const saleRepository = new SaleRepository(Sale);
-        const purchases = await purchaseRepository.getSalesByDniAndYear(Number(cuit), Number(year));
+        const purchases = await purchaseRepository.getPurchasesByCuitAndYear(Number(cuit), Number(year));
 
         return res.json({ data: purchases });
     } catch (error) {
@@ -129,7 +129,7 @@ export const findTotalPaymentsByTypeAndMonth = async (req, res) => {
 
 export const findPurchaseByPurchaseNumber = async (req, res) => {
     try {
-        const purchase = await purchaseRepository.getPurchaseByPurchaseNumber( Number(req.params.purchaseNumber) )
+        const purchase = await purchaseRepository.getPurchaseByPurchaseNumber( parseInt(req.params.purchaseNumber) )
         if (purchase.active == false) { throw new Error("el registro de compra está inactivo"); }
         //res.status(404).send({message:})}
         
@@ -138,8 +138,8 @@ export const findPurchaseByPurchaseNumber = async (req, res) => {
 
         const formattedPurchase ={
             _id:purchase._id,
-            purchaseNumber: sale.saleNumber,
-            purchaseDate: sale.saleDate,
+            purchaseNumber: purchase.purchaseNumber,
+            purchaseDate: purchase.purchaseDate,
             //saleTime: sale.saleTime,
             payment:purchase.payment,
             itemList:purchase.itemList,
@@ -251,7 +251,7 @@ export const findPurchasesByMonthAndYear = async (req, res) => {
                 //saleTime: sale.saleTime,
                 paid:  purchase.paid,
                 supplier: purchase.supplier,
-                supplierNumber: supplier.supplierNumber
+                purchaseNumber: purchase.purchaseNumber
             });
             return formattedPurchases;
         }, []);
