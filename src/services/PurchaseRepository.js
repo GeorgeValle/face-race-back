@@ -29,7 +29,7 @@ export default class PurchaseRepository {
     }
     async getPurchasesByName(name) {
         try {
-            const purchases = await this.purchaseDAO.getOneSalesByName(name);
+            const purchases = await this.purchaseDAO.getPurchasesByName(name);
             return purchases;
         } catch (error) {
             throw error;
@@ -38,7 +38,7 @@ export default class PurchaseRepository {
 
     
 
-    async getPurchaseBySaleNumber(purchaseNumber){
+    async getPurchaseByPurchaseNumber(purchaseNumber){
         try{
             const purchase = await this.purchaseDAO.getByFieldDAO({ purchaseNumber:  purchaseNumber  })
             return purchase[0];
@@ -60,16 +60,16 @@ export default class PurchaseRepository {
 
     async getPurchasesByMonthAndYear (month, year) {
         try {
-            const purchases = await this.purchaseDAO.getSalesByMonthAndYear(month, year);
+            const purchases = await this.purchaseDAO.getPurchasesByMonthAndYear(month, year);
             return purchases;
         } catch (error) {
             throw error;
         }
     }
 
-    async getPurchaseByDniAndYear (dni, year) {
+    async getPurchasesByCuitAndYear (cuit, year) {
         try{
-            const purchases = this.purchaseDAO.getSalesByDniAndYear(dni, year)
+            const purchases = this.purchaseDAO.getPurchasesByCuitAndYear(cuit, year)
             return purchases;
         }catch(error){
             throw error;

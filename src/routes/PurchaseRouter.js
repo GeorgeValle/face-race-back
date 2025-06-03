@@ -51,9 +51,9 @@ router.put("/number/:purchaseNumber", editPurchaseByPurchaseNumber);
 
 router.delete("/delete/:id",deletePurchase);
 
-router.put("/disable/:saleNumber",disablePurchaseByPurchaseNumber);
+router.put("/disable/:purchaseNumber",disablePurchaseByPurchaseNumber);
 
-router.put("/enable/:saleNumber",enablePurchaseByPurchaseNumber);
+router.put("/enable/:purchaseNumber",enablePurchaseByPurchaseNumber);
 
 
 export default router
