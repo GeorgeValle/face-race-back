@@ -136,8 +136,30 @@ try {
         return res.status(500).send({ message: error })
     }
 }
+ 
+export const editStockItemByCode = async (req, res) => {
+    const code = parseInt(req.params.code);
+    
+    if(!code) return res.status(400).send({message:"Falta el código"})
+    const body = req.body;
+    if(!body) return res.status(400).send({message:"Falta la cantidad"})
+        
+    const data = {stockQuantity:body.quantity}
+    
+try {
+        const item = await itemRepository.updateStockItemByCode(code, data)
+        if (!item){return  res.status(400).send({message:"NO existe el Artículo"})}
+            logInfo.info("Stock de artículo actualizado por Código")
+        return  res.status(200).send({message:"Stock de Artículo actualizado"})
+    } catch (error) {
+        logInfo.info("error por código")
+        return res.status(500).send({ message: error })
+    }
 
-export const editItemByName = async (req, res) => {
+
+}
+
+export const editItemByName = async (req, res) => { 
     const name = req.params.name;
     if(!name) return res.status(400).send({message:"Falta el nombre"})
     const body = req.body;

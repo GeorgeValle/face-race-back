@@ -107,7 +107,13 @@ class Purchase extends MongoDAO { //extends methods in common
         ]);
     }
 
-
+    async updatePurchaseItemChecked(purchaseNumber, itemCode,checkedValue){
+        return await this.collection.findOneAndUpdate(
+            { purchaseNumber, 'itemList.code': itemCode },
+            { $set: { 'itemList.$.checked': checkedValue } },
+            { new: true } // return updated document
+        );
+    }
 
 }
 export default new Purchase

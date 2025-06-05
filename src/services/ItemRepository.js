@@ -76,6 +76,17 @@ export default class ItemRepository {
         }
     }
 
+    async updateStockItemByCode(code,data){
+        
+        try {
+            //const updatedClient = await this.clientDAO.updateByFieldDAO(dni, data);
+            const updatedItem = await this.itemDAO.incrementOneFieldDAO({code: code},data);
+            return updatedItem
+        }catch(error){
+            throw error;
+        }
+    }
+
     async updateItemByCode(code, data){
         try {
             //const updatedClient = await this.clientDAO.updateByFieldDAO(dni, data);

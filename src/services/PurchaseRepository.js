@@ -122,6 +122,17 @@ export default class PurchaseRepository {
         }
     }
 
+    async updatePurchaseItemChecked(purchaseNumber,code,checkedStatus){
+        try {
+            //const updatedClient = await this.clientDAO.updateByFieldDAO(dni, data);
+            const updatedPurchase = await this.purchaseDAO.updatePurchaseItemChecked(purchaseNumber,code,checkedStatus);
+            return updatedPurchase
+        }catch(error){
+            throw error;
+        }
+
+    }
+
     /* async updateItemByName(name, data){
         try {
             //const updatedClient = await this.clientDAO.updateByFieldDAO(dni, data);

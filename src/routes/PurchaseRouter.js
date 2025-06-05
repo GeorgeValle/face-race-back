@@ -16,7 +16,9 @@ import {registerPurchase,
     findTotalPaymentsByTypeAndMonth,
     findTotalProductAmountByCodeAndMonth,
     editDescriptionByPurchaseNumber,
-    editPaidStateByPurchaseNumber
+    editPaidStateByPurchaseNumber,
+    editStatusByPurchaseNumber,
+    editPurchaseItemChecked
 } from '../controllers/PurchaseController.js';
 
 const router = Router();
@@ -44,6 +46,10 @@ router.get("/id/:id", findPurchaseById);
 router.put("/id/:id", editPurchaseById);
 
 router.put("/paid/:purchaseNumber",editPaidStateByPurchaseNumber);
+
+router.put("/status/:purchaseNumber",editStatusByPurchaseNumber),
+
+router.put("/checked/:purchaseNumber/:code",editPurchaseItemChecked)
 
 router.put ("/description/:purchaseNumber",editDescriptionByPurchaseNumber);
 

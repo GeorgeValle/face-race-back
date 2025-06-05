@@ -38,7 +38,8 @@ const purchaseSchema = new Schema({
     },
     status:{
         type: String,
-        enum: ["in transit","receiver","under claim","cancelled","processing","refunded","failed"],
+        enum: ["shipped","Partially","Complete","draft","dispute","cancelled","processing","refunded","failed","others"],
+        default:"processing",
         require:true    
     }
 
