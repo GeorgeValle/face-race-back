@@ -145,7 +145,8 @@ export const findPurchaseByPurchaseNumber = async (req, res) => {
             itemList:purchase.itemList,
             description: purchase.description,
             supplier: purchase.supplier,
-            paid: purchase.paid
+            paid: purchase.paid,
+            status: purchase.status,
         }
         logInfo.info(formattedPurchase)
         return res.status(200).send({ data: formattedPurchase })
@@ -251,6 +252,7 @@ export const findPurchasesByMonthAndYear = async (req, res) => {
                 //saleTime: sale.saleTime,
                 paid:  purchase.paid,
                 supplier: purchase.supplier,
+                status: purchase.status,
                 purchaseNumber: purchase.purchaseNumber
             });
             return formattedPurchases;
@@ -362,6 +364,27 @@ export const editStatusByPurchaseNumber = async (req, res) =>{
         logInfo.info("error to update paid state by PurchaseNumber")
         return res.status(500).send({ message: error })
     }
+}
+
+export const editPurchaseItemChecked = async (req,res) =>{
+    const purchaseNumber = parseInt(req.params.purchaseNumber)
+    if(!purchaseNumber)return res.status(400).send({message: "Falta el numero"})
+        const code = parseInt(req.params.code)
+
+    const data = req.body.checked 
+    //updatePurchaseItemChecked
+
+    try{
+     // Cambiar el estado de checked
+        const updatedPurchase = await purchaseRepository.updatePurchaseItemChecked(purchaseNumber, code, data);
+        if (!updatedPurchase) { return res.status(400).send({ message: "NO existe la compra" }) }
+        //res.status(200).json(updatedPurchase);
+        return res.status(200).send({ message: "Estado del del item actualizado" })
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
+
 }
 
 /*export const editItemQuantityByCode = async (req, res) => {

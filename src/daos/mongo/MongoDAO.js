@@ -149,8 +149,9 @@ class MongoDAO {
                 //{'field' : dataFieldUpdate}
                 { $inc: fieldUpdate },
                 //{new: true} 
+                
             );
-
+                return true;
         } catch (err) {
 
         }

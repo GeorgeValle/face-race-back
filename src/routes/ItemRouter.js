@@ -10,7 +10,8 @@ import {registerItem,
     editItemByName,
     deleteItem,
     deleteItemByCode,
-    reorderPointList
+    reorderPointList,
+    editStockItemByCode
 } from '../controllers/ItemController.js';
 
 const router = Router();
@@ -30,6 +31,8 @@ router.put("/id/:id", editItemById);
 router.put("/code/:code", editItemByCode);
 
 router.put("/stock/:code", editItemQuantityByCode);
+
+router.put("/incrementStock/:code", editStockItemByCode);
 
 router.put("/name/:name", editItemByName);
 
