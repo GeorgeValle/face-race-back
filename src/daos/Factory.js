@@ -2,7 +2,7 @@
 import envs from "../config/Envs.js";
 import mongoose from "mongoose";
 
-let  UserDAO, ClientDAO, SupplierDAO, ItemDAO, AppointmentDAO, SaleDAO, PurchaseDAO;
+let  UserDAO, ClientDAO, SupplierDAO, ItemDAO, AppointmentDAO, SaleDAO, PurchaseDAO, ReconditioningDAO;
 
 switch (envs.PERSISTENCE) {
   case "MONGO":
@@ -29,6 +29,7 @@ switch (envs.PERSISTENCE) {
     const { default: AppointmentMongo } = await import ('./mongo/AppointmentMongo.js')
     const { default: SaleMongo } = await import ('./mongo/SaleMongo.js')
     const { default: PurchaseMongo } = await import ('./mongo/PurchaseMongo.js')
+    const {default: ReconditioningMongo} = await import ('./mongo/ReconditioningMongo.js')
     ClientDAO = ClientMongo;
     UserDAO = UserMongo;
     SupplierDAO = SupplierMongo;
@@ -36,9 +37,10 @@ switch (envs.PERSISTENCE) {
     AppointmentDAO = AppointmentMongo;
     SaleDAO = SaleMongo;
     PurchaseDAO = PurchaseMongo;
+    ReconditioningDAO = ReconditioningMongo;
     break;
   default:
     break;
 }
 
-export {UserDAO,ClientDAO,SupplierDAO,ItemDAO,AppointmentDAO,SaleDAO, PurchaseDAO}
+export {UserDAO,ClientDAO,SupplierDAO,ItemDAO,AppointmentDAO,SaleDAO, PurchaseDAO, ReconditioningDAO}
