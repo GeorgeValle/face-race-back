@@ -32,7 +32,7 @@ export default class ItemRepository {
     }
     async getItemByName(name) {
         try {
-            const item = await this.itemDAO.getOneItemByName(name);
+            const item = await this.itemDAO.getItemsByName(name,6);
             return item;
         } catch (error) {
             throw error;
