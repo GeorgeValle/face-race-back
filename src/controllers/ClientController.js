@@ -50,6 +50,19 @@ export const editClientById = async (req, res) => {
     }
 }
 
+export const findClientByName = async (req, res) => {
+    try {
+        const client = await itemRepository.getClientByName(req.params.name )
+        if (client.active==false) { throw new Error("el cliente está inactivo");}
+        logInfo.info("Cliente encontrado por nombre")
+        logInfo.info(client)
+
+        return res.status(200).send({client:client})
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
+
 export const editClientByDNI = async (req, res) => {
     const dni = req.params.dni;
     if(!dni) return res.status(400).send({message:"Falta el DNI"})

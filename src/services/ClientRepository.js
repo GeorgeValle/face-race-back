@@ -49,6 +49,16 @@ export default class ClientRepository {
             throw error;
         }
     }
+
+    async getClientByName(name) {
+        try {
+            const clients = await this.itemDAO.getClientsByName(name,6);
+            return clients;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
     async updateClientById(id, data) {
         try {
             const client = await this.clientDAO.updateByIdDAO(data, {_id:id});

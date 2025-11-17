@@ -8,6 +8,21 @@ class Client extends MongoDAO{ //extends methods in common
         super(ClientModel)
     }
 
+    getClientsByName = async (letter_name, limit) => {
+        try {
+
+            let objDAO = await this.collection.find({
+                name:{
+                    $regex: letter_name,
+                    $options: 'i'
+                    },
+                    active:true
+                }).limit(limit).exec()
+            return objDAO
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
 }
 
 export default new Client

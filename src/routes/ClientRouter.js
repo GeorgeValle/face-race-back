@@ -5,7 +5,8 @@ import {registerClient,
     editClientByDNI, 
     editClientById, 
     deleteClient,
-    deleteClientByDNI
+    deleteClientByDNI,
+    findClientByName
 } from '../controllers/ClientController.js';
 
 const router = Router();
@@ -13,6 +14,8 @@ const router = Router();
 router.post('/register', registerClient);
 
 router.get("/dni/:dni", findClientByDNI);
+
+router.get("/name/:name", findClientByName);
 
 router.get("/id/:id", findClientById);
 
