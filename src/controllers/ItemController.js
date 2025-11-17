@@ -29,7 +29,7 @@ export const findItemByCode = async (req, res) => {
         res.status(500).json({ message: error })
     }
 }
-// search items by name
+// search items by name"
 export const findItemByName = async (req, res) => {
     try {
         const item = await itemRepository.getItemByName(req.params.name )
