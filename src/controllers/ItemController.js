@@ -91,15 +91,16 @@ export const editItemById = async (req, res) => {
 }
 
 export const editItemByCode = async (req, res) => {
-    const code = req.params.code;
+
+    const code = parseInt(req.params.code);
     if(!code) return res.status(400).send({message:"Falta el código"})
     const body = req.body;
     
     const data = {
-        code:body.code,
+        code:parseInt(body.code),
         name:body.name,
-        stockQuantity:body.stockQuantity,
-        price:body.price,
+        stockQuantity:parseInt(body.stockQuantity),
+        price:parseFloat(body.price),
         category:body.category,
         brand:body.brand,
         model:body.model,
@@ -109,22 +110,23 @@ export const editItemByCode = async (req, res) => {
     }
 try {
         const item = await itemRepository.updateItemByCode(code, data)
+        logInfo.info("update item")
         if (!item){return  res.status(400).send({message:"NO existe el Artículo"})}
-            logInfo.info("Artículo actualizado por Código")
+            logInfo.info("item updated for code")
         return  res.status(200).send({message:"Artículo actualizado"})
     } catch (error) {
-        logInfo.info("error por código")
+        logInfo.info("error to update for code")
         return res.status(500).send({ message: error })
     }
 }
 
 export const editItemQuantityByCode = async (req, res) => {
-    const code = req.params.code;
+    const code = parseInt(req.params.code);
     if(!code) return res.status(400).send({message:"Falta el código"})
     const body = req.body;
     
     const data = {
-        stockQuantity:body.stockQuantity,
+        stockQuantity:parseInt(body.stockQuantity),
     }
 try {
         const item = await itemRepository.updateItemByCode(code, data)
@@ -144,7 +146,7 @@ export const editStockItemByCode = async (req, res) => {
     const body = req.body;
     if(!body) return res.status(400).send({message:"Falta la cantidad"})
         
-    const data = {stockQuantity:body.quantity}
+    const data = {stockQuantity:parseInt(body.quantity)}
     
 try {
         const item = await itemRepository.updateStockItemByCode(code, data)
@@ -165,10 +167,10 @@ export const editItemByName = async (req, res) => {
     const body = req.body;
     
     const data = {
-        code:body.code,
+        code:parseInt(body.code),
         name:body.name,
-        stockQuantity:body.stockQuantity,
-        price:body.price,
+        stockQuantity:parseInt(body.stockQuantity),
+        price:parseFloat(body.price),
         category:body.category,
         brand:body.brand,
         model:body.model,
