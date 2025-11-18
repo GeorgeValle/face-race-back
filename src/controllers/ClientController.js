@@ -52,10 +52,11 @@ export const editClientById = async (req, res) => {
 
 export const findClientByName = async (req, res) => {
     try {
-        const client = await itemRepository.getClientByName(req.params.name )
+        const client = await clientRepository.getClientByName(req.params.name )
+        logInfo.info(req.params.name)
         if (client.active==false) { throw new Error("el cliente está inactivo");}
         logInfo.info("Cliente encontrado por nombre")
-        logInfo.info(client)
+        logInfo.info(client[0])
 
         return res.status(200).send({client:client})
     } catch (error) {
@@ -64,7 +65,7 @@ export const findClientByName = async (req, res) => {
 }
 
 export const editClientByDNI = async (req, res) => {
-    const dni = req.params.dni;
+    const dni = parseInt(req.params.dni);
     if(!dni) return res.status(400).send({message:"Falta el DNI"})
     const body = req.body;
     

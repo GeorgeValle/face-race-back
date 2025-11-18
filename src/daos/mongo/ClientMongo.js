@@ -12,10 +12,10 @@ class Client extends MongoDAO{ //extends methods in common
         try {
 
             let objDAO = await this.collection.find({
-                name:{
-                    $regex: letter_name,
-                    $options: 'i'
-                    },
+                $or:[
+                        {name:{$regex: letter_name, $options: 'i'  },  },
+                        { surname: { $regex: letter_name, $options: 'i' } },
+                    ],
                     active:true
                 }).limit(limit).exec()
             return objDAO
