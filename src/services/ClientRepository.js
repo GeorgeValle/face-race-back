@@ -52,8 +52,8 @@ export default class ClientRepository {
 
     async getClientByName(name) {
         try {
-            const clients = await this.clientDAO.getClientsByName(name,6);
-            return clients;
+            const client = await this.clientDAO.getClientsByName(name,6);
+            return client;
         } catch (error) {
             throw error;
         }

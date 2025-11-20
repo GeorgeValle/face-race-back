@@ -51,12 +51,13 @@ export const editClientById = async (req, res) => {
 }
 
 export const findClientByName = async (req, res) => {
+    logInfo.info(req.params.name)
     try {
         const client = await clientRepository.getClientByName(req.params.name )
-        logInfo.info(req.params.name)
-        if (client.active==false) { throw new Error("el cliente está inactivo");}
+        
+        
         logInfo.info("Cliente encontrado por nombre")
-        logInfo.info(client[0])
+        logInfo.info(client)
 
         return res.status(200).send({client:client})
     } catch (error) {
