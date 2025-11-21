@@ -22,9 +22,13 @@ const clientSchema = new Schema({
     },
     name:{
         type:String,
+        trim: true,
+        index:true,
     },
     surname:{
         type:String,
+        trim: true,
+        index:true,
     },
     address:{
         type:String,

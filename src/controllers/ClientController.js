@@ -50,8 +50,23 @@ export const editClientById = async (req, res) => {
     }
 }
 
+export const findClientByName = async (req, res) => {
+    logInfo.info(req.params.name)
+    try {
+        const client = await clientRepository.getClientByName(req.params.name )
+        
+        
+        logInfo.info("Cliente encontrado por nombre")
+        logInfo.info(client)
+
+        return res.status(200).send({client:client})
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
+
 export const editClientByDNI = async (req, res) => {
-    const dni = req.params.dni;
+    const dni = parseInt(req.params.dni);
     if(!dni) return res.status(400).send({message:"Falta el DNI"})
     const body = req.body;
     
