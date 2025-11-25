@@ -9,14 +9,25 @@ class Supplier extends MongoDAO{ //extends methods in common
     }
 
     getSuppliersByName = async (letter_name, limit) => {
-        try {
+        // try {
 
+        //     let objDAO = await this.collection.find({
+        //         businessName:{
+        //             $regex: letter_name,
+        //             $options: 'i'
+        //             }
+        //         }).limit(limit).exec()
+        //     return objDAO
+        // } catch (err) {
+        //     console.log(err.message);
+        // }
+        try {
             let objDAO = await this.collection.find({
-                businessName:{
-                    $regex: letter_name,
-                    $options: 'i'
-                    }
-                }).limit(limit).exec()
+                $or: [
+                    { businessName: { $regex: letter_name, $options: 'i' } },
+                    { companyName: { $regex: letter_name, $options: 'i' } }
+                ]
+            }).limit(limit)
             return objDAO
         } catch (err) {
             console.log(err.message);
