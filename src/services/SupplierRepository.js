@@ -52,7 +52,7 @@ export default class SupplierRepository {
 
     async getListSupplierByName(name) {
         try {
-            const suppliers = await this.supplierDAO.getSuppliersByName(name, 5);
+            const suppliers = await this.supplierDAO.getSuppliersByName(name, 6);
             return suppliers;
         } catch (error) {
             throw error;

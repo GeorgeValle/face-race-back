@@ -41,8 +41,8 @@ export const findSupplierById = async (req, res) => {
 
 export const findListSuppliersByName = async (req, res) => {
     try {
-        const suppliersList = await supplierRepository.getListSupplierByName(req.params.businessName)
-        return res.status(200).send( suppliersList)
+        const suppliers = await supplierRepository.getListSupplierByName(req.params.businessName)
+        return res.status(200).send({suppliers:suppliers})
     } catch (error) {
         res.status(404).json({ message: error })
     }
