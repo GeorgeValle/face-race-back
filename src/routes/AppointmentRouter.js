@@ -5,6 +5,7 @@ import {registerAppointment,
     findAppointmentByShiftDate,
     findAppointmentsByMonthAndYear, 
     findAppointmentByDNI,
+    findAppointmentsByDNI,
     editAppointmentById,
     deleteAppointment,
     
@@ -22,6 +23,8 @@ router.get("/shiftDate/:shiftDate", findAppointmentByShiftDate);
 router.get("/date/:month/:year", findAppointmentsByMonthAndYear)
 
 router.get("/dni/:dni",findAppointmentByDNI)
+
+router.get("many/:dni",findAppointmentsByDNI)
 
 router.get("/id/:id", findAppointmentById);
 

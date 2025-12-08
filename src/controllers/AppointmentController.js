@@ -70,6 +70,20 @@ export const findAppointmentByDNI = async (req, res) => {
     }
 }
 
+export const findAppointmentsByDNI = async (req, res) => {
+    logInfo.info("find many by dni")
+    logInfo.info(req.params.dni)
+    try {
+        const appointments = await appointmentRepository.getAppointmentsByDNI({dni: parseInt(req.params.dni)})
+        logInfo.info("Appointments found By dni")
+        logInfo.info(appointments)
+
+        return res.status(200).send({data:appointments})
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
+
 export const findAppointmentByShiftDate = async (req, res) => {
     try {
         const appointment = await appointmentRepository.getOneAppointmentByShiftDate(req.params.shiftDate)
