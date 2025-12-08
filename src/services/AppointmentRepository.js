@@ -81,6 +81,18 @@ export default class AppointmentRepository {
         }
     }
 
+    async getAppointmentsByDNI(dni){
+        try{
+            const appointments = await this.appointmentDAO.getByFieldDAO(dni);
+            
+            
+            return appointments;
+            
+        }catch(error){
+            throw error;
+        }
+    }
+
     async updateAppointmentById(id, data) {
         try {
             const appointment = await this.appointmentDAO.updateByIdDAO(data, {_id:id});
