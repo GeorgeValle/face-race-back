@@ -40,6 +40,15 @@ export default class AppointmentRepository {
         }
     }
 
+    async getOneAppointmentByDateAndTime(shiftDate, timeSlot){
+        try{
+            const appointment = await this.appointmentDAO.getOneByFieldDAO({shiftDate:shiftDate, timeSlot:timeSlot});
+            return appointment;
+        }catch (error){
+            throw error;
+        }
+    }
+
     async getAppointmentsByShiftDate(selectedDate) {
         try {
             const appointment = await this.appointmentDAO.getByFieldDAO({shiftDate:selectedDate});
