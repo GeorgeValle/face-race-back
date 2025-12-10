@@ -22,6 +22,7 @@ router.get("/date/:month/:year", findAppointmentsByMonthAndYear)
 
 router.get("/dni/:dni",findAppointmentByDNI)
 
+//return many
 router.get("/many/:dni",findAppointmentsByDNI)
 
 router.get("/id/:id", findAppointmentById);

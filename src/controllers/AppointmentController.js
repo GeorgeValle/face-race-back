@@ -86,7 +86,7 @@ export const findAppointmentsByDNI = async (req, res) => {
     }
 }
 
-//obtain appointments by one date
+
 export const findAppointmentByShiftDate = async (req, res) => {
     try {
         const appointment = await appointmentRepository.getOneAppointmentByShiftDate(req.params.shiftDate)
@@ -98,7 +98,7 @@ export const findAppointmentByShiftDate = async (req, res) => {
     }
 }
 
-//obtain appointments by moth and year
+
 export const findAppointmentsByMonthAndYear = async (req, res) => {
 
     const month = req.params.month;
