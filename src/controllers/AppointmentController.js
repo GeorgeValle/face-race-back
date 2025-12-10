@@ -70,6 +70,7 @@ export const findAppointmentByDNI = async (req, res) => {
     }
 }
 
+//find many appointments for a single client
 export const findAppointmentsByDNI = async (req, res) => {
     logInfo.info("find many by dni")
     logInfo.info(req.params.dni)
