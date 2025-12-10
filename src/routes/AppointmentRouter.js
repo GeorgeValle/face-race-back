@@ -24,7 +24,8 @@ router.get("/date/:month/:year", findAppointmentsByMonthAndYear)
 
 router.get("/dni/:dni",findAppointmentByDNI)
 
-router.get("many/:dni",findAppointmentsByDNI)
+//games for 
+router.get("/many/:dni",findAppointmentsByDNI)
 
 router.get("/id/:id", findAppointmentById);
 
