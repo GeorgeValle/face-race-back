@@ -8,8 +8,6 @@ import {registerAppointment,
     findAppointmentsByDNI,
     editAppointmentById,
     deleteAppointment,
-    
-
 } from '../controllers/AppointmentController.js';
 
 const router = Router();
@@ -24,18 +22,13 @@ router.get("/date/:month/:year", findAppointmentsByMonthAndYear)
 
 router.get("/dni/:dni",findAppointmentByDNI)
 
-router.get("many/:dni",findAppointmentsByDNI)
+router.get("/many/:dni",findAppointmentsByDNI)
 
 router.get("/id/:id", findAppointmentById);
 
 router.put("/id/:id", editAppointmentById);
 
-
-
 router.delete("/delete/:id",deleteAppointment);
-
-
-
 
 
 export default router;

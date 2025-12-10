@@ -56,6 +56,7 @@ export const findAppointmentById = async (req, res) => {
     }
 }
 
+// obtain one client appointment
 export const findAppointmentByDNI = async (req, res) => {
     logInfo.info("find by dni")
     logInfo.info(req.params.dni)
@@ -70,6 +71,7 @@ export const findAppointmentByDNI = async (req, res) => {
     }
 }
 
+// obtain all client appointments 
 export const findAppointmentsByDNI = async (req, res) => {
     logInfo.info("find many by dni")
     logInfo.info(req.params.dni)
@@ -84,6 +86,7 @@ export const findAppointmentsByDNI = async (req, res) => {
     }
 }
 
+//obtain appointments by one date
 export const findAppointmentByShiftDate = async (req, res) => {
     try {
         const appointment = await appointmentRepository.getOneAppointmentByShiftDate(req.params.shiftDate)
@@ -95,6 +98,7 @@ export const findAppointmentByShiftDate = async (req, res) => {
     }
 }
 
+//obtain appointments by moth and year
 export const findAppointmentsByMonthAndYear = async (req, res) => {
 
     const month = req.params.month;
