@@ -56,6 +56,22 @@ export const findReconditioningById = async (req, res) => {
     }
 }
 
+export const findOneReconditioningByDateAndTime = async (req, res) =>{
+    const shiftDate = req.params.shiftDate;
+    const timeSlot = req.params.timeSlot;
+    logInfo.info(shiftDate)
+    logInfo.info(timeSlot)
+    try{
+            const reconditioning = await reconditioningRepository.getOneReconditioningByDateAndTime(shiftDate, timeSlot)
+            logInfo.info("Reconditioning found By ShiftDate and timeSlot")
+            logInfo.info(reconditioning)
+    
+            return res.status(200).send({data:reconditioning})
+        }catch(error){
+            res.status(500).json({ message: error })
+        }
+}
+
 export const findReconditioningByDNI = async (req, res) => {
     logInfo.info("find by dni")
     logInfo.info(req.params.dni)
@@ -65,6 +81,20 @@ export const findReconditioningByDNI = async (req, res) => {
         logInfo.info(reconditioning)
 
         return res.status(200).send({data:reconditioning})
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
+
+export const findReconditioningsByDNI = async (req, res) => {
+    logInfo.info("find by dni")
+    logInfo.info(req.params.dni)
+    try {
+        const reconditionings = await reconditioningRepository.getReconditioningsByDNI({dni: parseInt(req.params.dni)})
+        logInfo.info("Reconditionings found By dni")
+        logInfo.info(reconditionings)
+
+        return res.status(200).send({data:reconditionings})
     } catch (error) {
         res.status(500).json({ message: error })
     }

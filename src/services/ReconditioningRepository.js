@@ -57,6 +57,15 @@ export default class ReconditioningRepository {
             throw error;
         }
     }
+
+    async getOneReconditioningByDateAndTime(shiftDate, timeSlot){
+        try{
+            const reconditioning = await this.reconditioningDAO.getOneByFieldDAO({shiftDate:shiftDate, timeSlot:timeSlot});
+            return reconditioning;
+        }catch(error){
+            throw error;
+        }
+    }
     
     async getOneReconditioningByShiftDate(selectedDate){
         try{
@@ -80,6 +89,20 @@ export default class ReconditioningRepository {
             throw error;
         }
     }
+
+    async getReconditioningsByDNI(dni){
+        try{
+            const reconditionings = await this.reconditioningDAO.getByFieldDAO(dni);
+            
+            
+            return reconditionings;
+            
+        }catch(error){
+            throw error;
+        }
+    }
+
+
 
     async updateReconditioningById(id, data) {
         try {

@@ -14,7 +14,6 @@ const appointmentSchema = new Schema({
         type: String,
         lowercase: true,
         trim: true,
-        unique:true,
         validate: {
         validator: function(value) {
             return /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value);
