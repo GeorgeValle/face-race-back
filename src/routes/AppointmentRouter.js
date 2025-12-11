@@ -1,11 +1,13 @@
 import { Router } from "express";
-import {registerAppointment,
+import {
+    registerAppointment,
     findAppointmentsByShiftDate,
     findAppointmentById, 
     findAppointmentByShiftDate,
     findAppointmentsByMonthAndYear, 
     findAppointmentByDNI,
     findAppointmentsByDNI,
+    findOneAppointmentByDateAndTime,
     editAppointmentById,
     deleteAppointment,
 } from '../controllers/AppointmentController.js';
@@ -18,12 +20,13 @@ router.get("/manyByDate/:shiftDate", findAppointmentsByShiftDate);
 
 router.get("/shiftDate/:shiftDate", findAppointmentByShiftDate);
 
-router.get("/date/:month/:year", findAppointmentsByMonthAndYear)
+router.get("/day/:shiftDate/time/:timeSlot", findOneAppointmentByDateAndTime);
 
-router.get("/dni/:dni",findAppointmentByDNI)
+router.get("/date/:month/:year", findAppointmentsByMonthAndYear);
 
-//return many
-router.get("/many/:dni",findAppointmentsByDNI)
+router.get("/dni/:dni",findAppointmentByDNI);
+
+router.get("/many/:dni",findAppointmentsByDNI);
 
 router.get("/id/:id", findAppointmentById);
 
