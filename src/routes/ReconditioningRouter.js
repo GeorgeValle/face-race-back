@@ -5,6 +5,8 @@ import {registerReconditioning,
     findReconditioningByShiftDate,
     findReconditioningsByMonthAndYear, 
     findReconditioningByDNI,
+    findReconditioningsByDNI,
+    findOneReconditioningByDateAndTime,
     editReconditioningById,
     deleteReconditioning,
     
@@ -22,6 +24,10 @@ router.get("/shiftDate/:shiftDate", findReconditioningByShiftDate);
 router.get("/date/:month/:year", findReconditioningsByMonthAndYear)
 
 router.get("/dni/:dni",findReconditioningByDNI)
+
+router.get("/many/:dni", findReconditioningsByDNI)
+
+router.get("/day/:shiftDate/time/:timeSlot",findOneReconditioningByDateAndTime )
 
 router.get("/id/:id", findReconditioningById);
 
