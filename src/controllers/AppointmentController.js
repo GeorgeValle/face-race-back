@@ -70,6 +70,22 @@ export const findAppointmentByDNI = async (req, res) => {
     }
 }
 
+export const findOneAppointmentByDateAndTime = async (req, res) => {
+    const shiftDate = req.params.shiftDate;
+    const timeSlot = req.params.timeSlot;
+    logInfo.info(shiftDate)
+    logInfo.info(timeSlot)
+    try{
+        const appointment = await appointmentRepository.getOneAppointmentByDateAndTime(shiftDate, timeSlot)
+        logInfo.info("Appointment found By ShiftDate and timeSlot")
+        logInfo.info(appointment)
+
+        return res.status(200).send({data:appointment})
+    }catch(error){
+        res.status(500).json({ message: error })
+    }
+}
+
 //find many appointments for a single client
 export const findAppointmentsByDNI = async (req, res) => {
     logInfo.info("find many by dni")

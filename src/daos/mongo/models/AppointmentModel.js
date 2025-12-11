@@ -23,7 +23,6 @@ const appointmentSchema = new Schema({
     },
     dni:{
         type:Number,
-        unique:true,
         index:true,
         trim:true,
     },
