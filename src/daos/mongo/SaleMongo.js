@@ -63,6 +63,42 @@ class Sale extends MongoDAO { //extends methods in common
         ]);
     }
 
+    async  getSalesGroupedByDate(year) {
+    // choose dates range of year
+    const startDate = new Date(year, 0, 1);   // 1 january
+    const endDate = new Date(year, 11, 31, 23, 59, 59); // 31 december
+
+    // Aggregate: Group by month and add amounts of itemList 
+    const results= await this.collection.aggregate([
+        {
+            $match: {
+                saleDate: { $gte: startDate, $lte: endDate }
+            }
+        },
+        {
+            $unwind: '$itemList'
+        },
+        {
+            $group: {
+                _id: { $month: '$saleDate' },
+                total: { $sum: { $toDouble: '$itemList.amount' } }
+            }
+        },
+        {
+            $sort: { '_id': 1 }
+        }
+    ]);
+
+    // fill empty months whit 0 
+    const monthlyTotals = {};
+    for (let m = 1; m <= 12; m++) {
+        const found = results.find(r => r._id === m);
+        monthlyTotals[m] = found ? found.total : 0;
+    }
+
+    return monthlyTotals;
+}
+
     async getTotalPaymentsByTypeAndMonth(type, year) {
         return await this.collection.aggregate([
             {
