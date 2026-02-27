@@ -1,4 +1,5 @@
 import { purchaseRepository } from "../services/IndexRepository.js"
+import { itemRepository } from "../services/IndexRepository.js"
 import { logInfo, errorLogger } from '../utils/Logger.js'
 //import { editItemQuantityByCode } from "./ItemController.js"
 //import ClientDTO from '../dto/ClientDTO.js'
@@ -375,7 +376,8 @@ export const editPurchaseItemChecked = async (req,res) =>{
     //updatePurchaseItemChecked
 
     try{
-     // Cambiar el estado de checked
+     // change checked status
+        
         const updatedPurchase = await purchaseRepository.updatePurchaseItemChecked(purchaseNumber, code, data);
         if (!updatedPurchase) { return res.status(400).send({ message: "NO existe la compra" }) }
         //res.status(200).json(updatedPurchase);
@@ -384,6 +386,33 @@ export const editPurchaseItemChecked = async (req,res) =>{
         res.status(500).json({ message: error.message });
     }
 
+}
+
+export const editPurchaseItemsChecked = async (req,res) =>{
+    const purchaseNumber = parseInt(req.params.purchaseNumber)
+    if(!purchaseNumber)return res.status(400).send({message: "Falta el numero"})
+    const code = parseInt(req.params.code)
+    if(!code)return res.status(400).send({message: "Falta el código"})
+    const quantity = parseInt(req.params.quantity)
+    if(!quantity)return res.status(400).send({message: "Falta la cantidad"})
+
+    const data = req.body.checked 
+    if(!data)return res.status(400).send({message: "Falta el estado"})
+
+    try{
+        // change quantity item
+        const updateItemQuantity = await itemRepository.updateStockItemByCode(code, {stockQuantity:quantity})
+        logInfo.info(updateItemQuantity)
+        if (!updateItemQuantity){return res.status(400).send({ message: "NO se actualizó la catidad del item" })}
+        //change checked status
+        const updatedPurchase = await purchaseRepository.updatePurchaseItemChecked(purchaseNumber, code, data);
+        if (!updatedPurchase) { return res.status(400).send({ message: "NO existe la compra" }) }
+        //res.status(200).json(updatedPurchase);
+        return res.status(200).send({ message: "Estado del del item actualizado" })
+        
+    }catch(error){
+        res.status(500).json({ message: error.message });
+    }
 
 }
 
