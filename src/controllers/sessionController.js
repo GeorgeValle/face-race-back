@@ -205,5 +205,5 @@ export const getProfile = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
     res.clearCookie("keyCookieJobsRoad").json({ logout: true });
-    logInfo.info("User Disconect");
+    logInfo.info("User Disconnect");
 };

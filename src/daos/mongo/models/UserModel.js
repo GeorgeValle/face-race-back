@@ -42,7 +42,7 @@ const userSchema = new Schema({
     role:{
         type:String,
         default:'Normal',
-        enum: ['Normal', 'Recuiter', 'Admin']
+        enum: ['Normal', 'Cashier','Mechanic','Warehouse','Clerk','Manager', 'Admin']
     },
     //status the email verified or not
     status:{

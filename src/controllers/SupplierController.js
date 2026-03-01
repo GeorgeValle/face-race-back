@@ -6,6 +6,7 @@ export const registerSupplier = async (req, res) => {
     logInfo.info(`${req.body.cuit} `)
     try {
         const supplier = await supplierRepository.createSupplier(req.body)
+
         logInfo.info(`Supplier created:`)
         return res.status(201).json({
             message:

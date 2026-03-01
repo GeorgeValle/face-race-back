@@ -88,8 +88,10 @@ export const findSalesByDniAndYear = async (req, res) => {
         }
 
         //const saleRepository = new SaleRepository(Sale);
-        const sales = await saleRepository.getSalesByDniAndYear(Number(dni), Number(year));
-
+        //const sales = await saleRepository.getSalesByDniAndYear(Number(dni), Number(year));
+        const sales = await saleRepository.getSalesByDniAndYear(Number(dni),Number(year));
+        logInfo.info(sales)
+        
         return res.json({ data: sales });
     } catch (error) {
         console.error("Error al obtener ventas:", error);
